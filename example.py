@@ -109,7 +109,7 @@ def main():
         
         # Generate Gaussian labels
         label_gen = GaussianLabelGenerator(sigma=sigma, sample_rate=sample_rate)
-        pick_times = picks / sample_rate
+        pick_times = [p / sample_rate for p in picks]
         label = label_gen(n_samples, pick_times)
         label_list.append(label)
         
