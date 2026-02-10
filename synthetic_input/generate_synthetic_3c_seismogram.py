@@ -337,9 +337,14 @@ def main():
 
     # Naming Parameters
     EVENT_ID = "SYNTHETIC_001"
-    STATION = "SYN"
-    NETWORK = "XX"
+    STATION = "HX"
+    NETWORK = "QD"
     SYN_TAG = "synthetic"
+    
+    # Random location in Oklahoma
+    # Oklahoma boundaries: Lat 33.6° to 37.0° N, Lon -103.0° to -94.4° W
+    station_latitude = np.random.uniform(33.6, 37.0)
+    station_longitude = np.random.uniform(-103.0, -94.4)
     
     p_time, s_time = get_random_times(DURATION, PRE_ARRIVAL_TIME, WINDOW_LENGTH)
     
@@ -378,6 +383,8 @@ def main():
         "event_id": EVENT_ID,
         "station": STATION,
         "network": NETWORK,
+        "station_latitude": round(station_latitude, 4),
+        "station_longitude": round(station_longitude, 4),
         "start_time": stream[0].stats.starttime.isoformat(),
         "sample_rate": SAMPLE_RATE,
         "duration": DURATION,

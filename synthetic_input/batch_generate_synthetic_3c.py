@@ -175,8 +175,8 @@ def generate_3c_event(
     p_frequency: float,
     s_frequency: float,
     coda_amplitude: float,
-    station: str = 'SYN',
-    network: str = 'XX'
+    station: str = 'HX',
+    network: str = 'QD'
 ) -> Tuple[Stream, np.ndarray]:
     """
     Generate 3-component (Z, N, E) synthetic seismic event.
@@ -292,6 +292,8 @@ def save_seismogram(
     sample_rate: float,
     duration: float,
     noise_level: float,
+    station_latitude: float,
+    station_longitude: float,
     output_dir: str = '.'
 ) -> Dict[str, str]:
     """
@@ -307,6 +309,8 @@ def save_seismogram(
         sample_rate: Sampling rate in Hz
         duration: Total duration in seconds
         noise_level: Noise level for SNR calculation
+        station_latitude: Station latitude in degrees
+        station_longitude: Station longitude in degrees
         output_dir: Output directory path (default: current directory)
         
     Returns:
@@ -342,6 +346,8 @@ def save_seismogram(
         "event_id": event_id,
         "station": station,
         "network": network,
+        "station_latitude": round(station_latitude, 4),
+        "station_longitude": round(station_longitude, 4),
         "start_time": stream[0].stats.starttime.isoformat(),
         "sample_rate": sample_rate,
         "duration": duration,
@@ -416,8 +422,8 @@ def main():
     coda_amplitude = config.get('coda_amplitude', 0.3)
     
     # Fixed naming parameters
-    station = 'SYN'
-    network = 'XX'
+    station = 'HX'
+    network = 'QD'
     output_dir = '.'
     
     print(f"\nConfiguration:")
@@ -452,6 +458,11 @@ def main():
         # Generate random arrival times
         p_time, s_time = get_random_times(duration, pre_arrival_time, window_length)
         
+        # Generate random location in Oklahoma
+        # Oklahoma boundaries: Lat 33.6° to 37.0° N, Lon -103.0° to -94.4° W
+        station_latitude = np.random.uniform(33.6, 37.0)
+        station_longitude = np.random.uniform(-103.0, -94.4)
+        
         # Randomize noise level if enabled
         if randomize_noise:
             event_noise_level = np.random.uniform(noise_level_range[0], noise_level_range[1])
@@ -483,6 +494,8 @@ def main():
             sample_rate=sample_rate,
             duration=duration,
             noise_level=event_noise_level,
+            station_latitude=station_latitude,
+            station_longitude=station_longitude,
             output_dir=output_dir
         )
         

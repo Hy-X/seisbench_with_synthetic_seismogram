@@ -1,0 +1,28 @@
+{
+    "event_id": "SYNTHETIC_007",
+    "station": "HX",
+    "network": "QD",
+    "station_latitude": 35.9621,
+    "station_longitude": -100.07,
+    "start_time": "1970-01-01T00:00:00",
+    "sample_rate": 100,
+    "duration": 120.0,
+    "p_arrival_sample": 3610,
+    "s_arrival_sample": 3968,
+    "p_arrival_time": 36.104305602960885,
+    "s_arrival_time": 39.68973611199429,
+    "snr_db": 9.941672013851319,
+    "channels": [
+        "HHZ",
+        "HHN",
+        "HHE"
+    ],
+    "files": {
+        "mseed": [
+            "SYNTHETIC_007_synthetic_HX_QD_HHZ.mseed",
+            "SYNTHETIC_007_synthetic_HX_QD_HHN.mseed",
+            "SYNTHETIC_007_synthetic_HX_QD_HHE.mseed"
+        ],
+        "npy": "SYNTHETIC_007_synthetic_HX_QD_3C.npy"
+    }
+}

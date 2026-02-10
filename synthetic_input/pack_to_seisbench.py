@@ -156,8 +156,10 @@ def build_trace_metadata(event: Dict, data_3c: np.ndarray, sampling_rate: float)
     event_id = event['event_id']
     
     # Station/Network information
-    station_code = metadata.get('station', 'SYN')
-    network_code = metadata.get('network', 'XX')
+    station_code = metadata.get('station', 'HX')
+    network_code = metadata.get('network', 'QD')
+    station_latitude = metadata.get('station_latitude', 35.0)
+    station_longitude = metadata.get('station_longitude', -97.0)
     
     # Phase arrivals
     p_arrival_sample = metadata.get('p_arrival_sample', -1)
@@ -169,6 +171,8 @@ def build_trace_metadata(event: Dict, data_3c: np.ndarray, sampling_rate: float)
         'station_network_code': network_code,
         'station_code': station_code,
         'station_location_code': '',
+        'station_latitude': station_latitude,
+        'station_longitude': station_longitude,
         
         # Trace properties (trace_ prefix)
         'trace_channel': 'HH',  # High-gain, high sample rate
