@@ -1,13 +1,13 @@
 {
-    "generation_timestamp": "2026-02-10T13:27:59.926473",
+    "generation_timestamp": "2026-02-10T13:36:49.717947",
     "num_seismograms": 12,
     "events": [
         {
             "event_id": "SYNTHETIC_001",
-            "p_arrival_time": 19.788158202439664,
-            "s_arrival_time": 20.911780198065,
-            "noise_level": 0.3655539610732784,
-            "snr_db": 4.370485058015944,
+            "p_arrival_time": 107.95929952213189,
+            "s_arrival_time": 109.77392688060256,
+            "noise_level": 0.12070868157991982,
+            "snr_db": 9.182614935591163,
             "files": {
                 "mseed": [
                     "SYNTHETIC_001_synthetic_SYN_XX_HHZ.mseed",
@@ -20,10 +20,10 @@
         },
         {
             "event_id": "SYNTHETIC_002",
-            "p_arrival_time": 17.16763035969524,
-            "s_arrival_time": 20.269553053130064,
-            "noise_level": 0.10363457303721019,
-            "snr_db": 9.844953375011794,
+            "p_arrival_time": 82.9918084283298,
+            "s_arrival_time": 87.11179932130062,
+            "noise_level": 0.3432453134058955,
+            "snr_db": 4.643953838096447,
             "files": {
                 "mseed": [
                     "SYNTHETIC_002_synthetic_SYN_XX_HHZ.mseed",
@@ -36,10 +36,10 @@
         },
         {
             "event_id": "SYNTHETIC_003",
-            "p_arrival_time": 20.86252326933832,
-            "s_arrival_time": 21.870739731383587,
-            "noise_level": 0.10833947111981024,
-            "snr_db": 9.652132888365827,
+            "p_arrival_time": 59.97488866499017,
+            "s_arrival_time": 92.61273770937879,
+            "noise_level": 0.2615349968445533,
+            "snr_db": 5.824701885576297,
             "files": {
                 "mseed": [
                     "SYNTHETIC_003_synthetic_SYN_XX_HHZ.mseed",
@@ -52,10 +52,10 @@
         },
         {
             "event_id": "SYNTHETIC_004",
-            "p_arrival_time": 14.533499981005992,
-            "s_arrival_time": 20.992190330692615,
-            "noise_level": 0.2896880253445151,
-            "snr_db": 5.3806945658872625,
+            "p_arrival_time": 8.60552238303125,
+            "s_arrival_time": 23.068099007658823,
+            "noise_level": 0.14416167320215204,
+            "snr_db": 8.411501857279095,
             "files": {
                 "mseed": [
                     "SYNTHETIC_004_synthetic_SYN_XX_HHZ.mseed",
@@ -68,10 +68,10 @@
         },
         {
             "event_id": "SYNTHETIC_005",
-            "p_arrival_time": 17.412737927269625,
-            "s_arrival_time": 19.213597218634938,
-            "noise_level": 0.2325545043867157,
-            "snr_db": 6.334752441492412,
+            "p_arrival_time": 109.59512352096047,
+            "s_arrival_time": 111.4669393429294,
+            "noise_level": 0.18530052293594218,
+            "snr_db": 7.32123355058471,
             "files": {
                 "mseed": [
                     "SYNTHETIC_005_synthetic_SYN_XX_HHZ.mseed",
@@ -84,10 +84,10 @@
         },
         {
             "event_id": "SYNTHETIC_006",
-            "p_arrival_time": 13.143042776349667,
-            "s_arrival_time": 20.150774822192254,
-            "noise_level": 0.20393331069527829,
-            "snr_db": 6.905118302807915,
+            "p_arrival_time": 104.81283404424808,
+            "s_arrival_time": 107.36048658907521,
+            "noise_level": 0.2603703189149691,
+            "snr_db": 5.8440852496612985,
             "files": {
                 "mseed": [
                     "SYNTHETIC_006_synthetic_SYN_XX_HHZ.mseed",
@@ -100,10 +100,10 @@
         },
         {
             "event_id": "SYNTHETIC_007",
-            "p_arrival_time": 19.697831824264945,
-            "s_arrival_time": 20.994722682068737,
-            "noise_level": 0.2651779412956712,
-            "snr_db": 5.764626053502574,
+            "p_arrival_time": 84.47579309548361,
+            "s_arrival_time": 98.2042624019153,
+            "noise_level": 0.33380426055466805,
+            "snr_db": 4.765081244465455,
             "files": {
                 "mseed": [
                     "SYNTHETIC_007_synthetic_SYN_XX_HHZ.mseed",
@@ -116,10 +116,10 @@
         },
         {
             "event_id": "SYNTHETIC_008",
-            "p_arrival_time": 12.267476522152576,
-            "s_arrival_time": 19.786735298855554,
-            "noise_level": 0.1446467396721963,
-            "snr_db": 8.396913508741514,
+            "p_arrival_time": 33.750639725114084,
+            "s_arrival_time": 62.246962858237616,
+            "noise_level": 0.1052417183981886,
+            "snr_db": 9.778120693210532,
             "files": {
                 "mseed": [
                     "SYNTHETIC_008_synthetic_SYN_XX_HHZ.mseed",
@@ -132,10 +132,10 @@
         },
         {
             "event_id": "SYNTHETIC_009",
-            "p_arrival_time": 15.260902105351747,
-            "s_arrival_time": 20.321839821652432,
-            "noise_level": 0.3921954883842722,
-            "snr_db": 4.0649740654045505,
+            "p_arrival_time": 43.804387865375624,
+            "s_arrival_time": 92.7758797782678,
+            "noise_level": 0.19862738436485566,
+            "snr_db": 7.01960876391062,
             "files": {
                 "mseed": [
                     "SYNTHETIC_009_synthetic_SYN_XX_HHZ.mseed",
@@ -148,10 +148,10 @@
         },
         {
             "event_id": "SYNTHETIC_010",
-            "p_arrival_time": 5.862331763168898,
-            "s_arrival_time": 7.489612187708871,
-            "noise_level": 0.35436297801619354,
-            "snr_db": 4.505516572227483,
+            "p_arrival_time": 49.42924083265721,
+            "s_arrival_time": 62.32337428525251,
+            "noise_level": 0.37278527181892274,
+            "snr_db": 4.285412542958568,
             "files": {
                 "mseed": [
                     "SYNTHETIC_010_synthetic_SYN_XX_HHZ.mseed",
@@ -164,10 +164,10 @@
         },
         {
             "event_id": "SYNTHETIC_011",
-            "p_arrival_time": 9.181245669990036,
-            "s_arrival_time": 17.33038575743236,
-            "noise_level": 0.3474308524946931,
-            "snr_db": 4.591316180327035,
+            "p_arrival_time": 95.76457717744884,
+            "s_arrival_time": 102.55870370044077,
+            "noise_level": 0.3053872292329349,
+            "snr_db": 5.151491283458459,
             "files": {
                 "mseed": [
                     "SYNTHETIC_011_synthetic_SYN_XX_HHZ.mseed",
@@ -180,10 +180,10 @@
         },
         {
             "event_id": "SYNTHETIC_012",
-            "p_arrival_time": 4.392727514434715,
-            "s_arrival_time": 10.320398613865954,
-            "noise_level": 0.10450816975407795,
-            "snr_db": 9.80849757969881,
+            "p_arrival_time": 16.784300000237522,
+            "s_arrival_time": 37.347305893321185,
+            "noise_level": 0.16758943802932547,
+            "snr_db": 7.757533553365425,
             "files": {
                 "mseed": [
                     "SYNTHETIC_012_synthetic_SYN_XX_HHZ.mseed",

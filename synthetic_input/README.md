@@ -45,6 +45,54 @@ Edit `Syn_Config.json` to set the number of seismograms:
 **Batch output:**
 - `batch_summary.json`: Summary of all generated events with arrival times
 
+### 3. `pack_to_seisbench.py` ⭐ **New**
+Converts synthetic seismograms into **SeisBench HDF5 and CSV format** for integration with SeisBench models.
+
+**Usage:**
+```bash
+python pack_to_seisbench.py
+```
+
+**Output:**
+- `synthetic_dataset.hdf5`: Waveform data in HDF5 format
+  - Each trace stored as 3C array (Z, N, E)
+  - Includes metadata attributes (sampling rate, picks, SNR)
+  - Compressed for efficient storage
+- `synthetic_metadata.csv`: Phase picks and metadata in CSV format
+  - Compatible with SeisBench dataset conventions
+  - Includes P/S arrival samples, times, SNR, pick weights
+
+**Loading with SeisBench:**
+```python
+import seisbench.data
+data = seisbench.data.WaveformDataset('synthetic_dataset.hdf5', 'synthetic_metadata.csv')
+waveforms, metadata = data.get_idx(0)
+```
+
+### 4. `test_seisbench_dataset.py`
+Tests and visualizes the packed SeisBench dataset.
+
+**Usage:**
+```bash
+python test_seisbench_dataset.py
+```
+
+**Output:**
+- Loads HDF5 and CSV files
+- Prints dataset statistics
+- Generates example plots showing low/medium/high SNR traces with phase picks
+
+### 5. `plot_noise_comparison.py`
+Creates visualization comparing different noise levels (self-contained).
+
+**Usage:**
+```bash
+python plot_noise_comparison.py
+```
+
+**Output:**
+- `noise_comparison.png`: Side-by-side comparison of low/medium/high noise examples
+
 ## Configuration File
 
 `Syn_Config.json` controls all generation parameters:
@@ -109,6 +157,31 @@ Each event includes:
 - SNR in dB and noise level used
 - File paths for associated data
 
+### SeisBench HDF5 Format
+- **HDF5 File**: Hierarchical data structure
+  - Each trace stored as dataset named by `trace_name` (event_id)
+  - Dataset shape: `(3, n_samples)` for Z, N, E components
+  - Dataset attributes: sampling_rate, station, network, picks, SNR
+  - Compressed with gzip (level 4) for efficient storage
+  - Component order: ZNE (vertical, north, east)
+
+- **CSV Metadata**: Tabular format with columns:
+  - `trace_name`: Unique trace identifier
+  - `station_code`, `network_code`: Station/network codes
+  - `trace_sampling_rate_hz`: Sampling rate
+  - `trace_npts`: Number of samples
+  - `trace_p_arrival_sample`, `trace_s_arrival_sample`: Pick samples
+  - `trace_p_arrival_time`, `trace_s_arrival_time`: Pick times in seconds
+  - `trace_p_status`, `trace_s_status`: Pick quality ('manual' for synthetic)
+  - `trace_p_weight`, `trace_s_weight`: Pick confidence (1.0 = high)
+  - `snr_db`: Signal-to-noise ratio
+  - `source_type`, `source_id`: Source information
+
+**Compatibility**: Format follows SeisBench conventions for seamless integration with:
+- PhaseNet
+- EQTransformer  
+- Other SeisBench-compatible models
+
 ## Physical Model
 
 The synthetic seismograms simulate realistic earthquake recordings:
@@ -119,27 +192,52 @@ The synthetic seismograms simulate realistic earthquake recordings:
 4. **Coda Waves**: Scattered energy following S-arrival
 5. **Realistic Envelopes**: Exponential decay with smooth onsets
 
-## Example Workflow
+## Example Workflows
 
-### Generate 100 Training Examples
+### Complete Pipeline: Generate → Pack → Test
 ```bash
-# 1. Edit config
+# 1. Configure generation
+# Edit Syn_Config.json to set num_seismograms=100
+
+# 2. Generate synthetic seismograms
+python batch_generate_synthetic_3c.py
+# Output: 100 events × 5 files each = 500 files
+
+# 3. Pack into SeisBench format
+python pack_to_seisbench.py
+# Output: synthetic_dataset.hdf5, synthetic_metadata.csv
+
+# 4. Test and visualize
+python test_seisbench_dataset.py
+# Output: example plots with phase picks
+
+# 5. Verify
+ls SYNTHETIC_*.npy | wc -l          # Should show 100
+ls -lh synthetic_dataset.hdf5       # Check size
+head synthetic_metadata.csv         # View picks
+```
+
+### Generate Training Dataset with Varied SNR
+```bash
+# Edit Syn_Config.json
 cat > Syn_Config.json <<EOF
 {
     "num_seismograms": 100,
     "sample_rate": 100,
-    "duration": 16.0,
-    "noise_level": 0.25,
+    "duration": 30.0,
+    "randomize_noise_level": true,
+    "noise_level_range": [0.1, 0.4],
     ...
 }
 EOF
 
-# 2. Generate batch
+# Generate with randomized noise
 python batch_generate_synthetic_3c.py
 
-# 3. Check output
-ls SYNTHETIC_*.npy | wc -l  # Should show 100
-cat batch_summary.json       # View summary
+# Pack for SeisBench
+python pack_to_seisbench.py
+
+# Result: 100 traces with SNR ranging from 4-10 dB
 ```
 
 ### Load Data in Python
@@ -148,18 +246,25 @@ import numpy as np
 import json
 from obspy import read
 
-# Load NumPy array (fastest)
+# Option 1: Load NumPy array (fastest)
 data_3c = np.load('SYNTHETIC_001_synthetic_SYN_XX_3C.npy')
-print(f"Shape: {data_3c.shape}")  # (3, 1600)
+print(f"Shape: {data_3c.shape}")  # (3, 3000)
 
-# Load MiniSEED (full metadata preserved)
+# Option 2: Load MiniSEED (full metadata preserved)
 stream = read('SYNTHETIC_001_synthetic_SYN_XX_HHZ.mseed')
 trace_z = stream[0]
 
-# Load metadata
-with open('SYNTHETIC_001_synthetic_SYN_XX_metadata.json') as f:
-    metadata = json.load(f)
-    
+# Option 3: Load from SeisBench format
+import h5py
+import pandas as pd
+
+with h5py.File('synthetic_dataset.hdf5', 'r') as hdf:
+    data = hdf['SYNTHETIC_001'][:]  # (3, 3000)
+
+df = pd.read_csv('synthetic_metadata.csv')
+picks = df[df['trace_name'] == 'SYNTHETIC_001'].iloc[0]
+p_sample = picks['trace_p_arrival_sample']
+s_sample = picks['trace_s_arrival_sample']
 p_time = metadata['p_arrival_time']
 s_time = metadata['s_arrival_time']
 ```

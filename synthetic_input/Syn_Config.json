@@ -1,6 +1,6 @@
 {
     "sample_rate": 100,
-    "duration": 30.0,
+    "duration": 120.0,
     "p_arrival_time": 2.0,
     "s_arrival_time": 8.0,
     "p_frequency": 20.0,
