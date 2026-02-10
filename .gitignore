@@ -1,0 +1,69 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+
+# PyTorch
+*.pth
+*.pt
+*.ckpt
+
+# Data
+*.h5
+*.hdf5
+*.npy
+*.npz
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Outputs
+outputs/
+logs/
+runs/
+checkpoints/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Plots
+*.png
+*.jpg
+*.jpeg
+*.pdf
+!examples/*.png
