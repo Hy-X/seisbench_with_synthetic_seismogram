@@ -16,7 +16,7 @@ The format follows SeisBench conventions for compatibility with existing
 SeisBench models (e.g., PhaseNet, EQTransformer).
 
 Usage:
-    python pack_to_seisbench.py
+    python P003_pack_to_seisbench.py
 
 Requirements:
     - seisbench
@@ -54,7 +54,7 @@ def discover_synthetic_data() -> List[Dict]:
     if len(metadata_files) == 0:
         raise FileNotFoundError(
             "No synthetic seismogram metadata files found (SYNTHETIC_*_metadata.json). "
-            "Please run batch_generate_synthetic_3c.py first."
+            "Please run P002_batch_generate_synthetic_3c.py first."
         )
     
     events = []
@@ -424,6 +424,48 @@ def verify_dataset(dataset_path: Path) -> bool:
         return False
 
 
+def cleanup_synthetic_files(events: List[Dict]) -> None:
+    """
+    Delete synthetic trace files after successful packing to save disk space.
+    
+    Removes MSEED files, NPY files, and metadata JSON files for each event.
+    
+    Args:
+        events: List of event dictionaries from discover_synthetic_data()
+    """
+    print("\nCleaning up synthetic trace files...")
+    
+    files_deleted = 0
+    files_failed = 0
+    
+    for event in events:
+        try:
+            # Delete MSEED files
+            for mseed_file in event['mseed_files'].values():
+                if os.path.exists(mseed_file):
+                    os.remove(mseed_file)
+                    files_deleted += 1
+            
+            # Delete NPY file
+            if os.path.exists(event['npy_file']):
+                os.remove(event['npy_file'])
+                files_deleted += 1
+            
+            # Delete metadata JSON file
+            metadata_file = f"{event['base_name']}_metadata.json"
+            if os.path.exists(metadata_file):
+                os.remove(metadata_file)
+                files_deleted += 1
+                
+        except Exception as e:
+            files_failed += 1
+            print(f"  Warning: Failed to delete files for {event['event_id']}: {e}")
+    
+    print(f"  ✓ Deleted {files_deleted} synthetic trace files")
+    if files_failed > 0:
+        print(f"  ⚠ Failed to delete {files_failed} files")
+
+
 def main():
     """Main execution function."""
     print("=" * 70)
@@ -453,6 +495,9 @@ def main():
     
     # Verify dataset by loading it with SeisBench
     if verify_dataset(dataset_path):
+        # Clean up synthetic trace files after successful packing
+        cleanup_synthetic_files(events)
+        
         print("\n" + "=" * 70)
         print("✓ Dataset creation completed successfully!")
         print("=" * 70)
@@ -464,9 +509,12 @@ def main():
         print(f"  dataset = sbd.WaveformDataset('{dataset_path}', sampling_rate=100)")
         print(f"  waveform = dataset.get_waveforms(0)")
         print(f"  metadata = dataset.metadata")
+        print("\nNote: Original synthetic trace files have been deleted to save space.")
+        print("      All data is preserved in the SeisBench format.")
         return 0
     else:
         print("\n✗ Dataset verification failed!")
+        print("   Keeping synthetic trace files for debugging.")
         return 1
 
 

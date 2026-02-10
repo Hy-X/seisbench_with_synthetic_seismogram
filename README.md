@@ -18,10 +18,10 @@ xiao_net_ver_2/
 ├── synthetic_input/     # Synthetic seismogram generation pipeline
 │   ├── README.md        # Detailed documentation for synthetic data
 │   ├── Syn_Config.json  # Configuration file for generation parameters
-│   ├── generate_synthetic_3c_seismogram.py  # Single seismogram generator
-│   ├── batch_generate_synthetic_3c.py       # Batch generation script
-│   ├── pack_to_seisbench.py                 # Convert to SeisBench format
-│   └── test_seisbench_dataset.py            # Verify dataset integrity
+│   ├── P001_generate_synthetic_3c_seismogram.py  # Single seismogram generator
+│   ├── P002_batch_generate_synthetic_3c.py       # Batch generation script
+│   ├── P003_pack_to_seisbench.py                 # Convert to SeisBench format
+│   └── T001_test_seisbench_dataset.py            # Verify dataset integrity
 ├── data/                # Generated datasets
 │   ├── metadata.csv     # Trace metadata with phase picks
 │   └── waveforms.hdf5   # 3-component waveform data
@@ -38,13 +38,13 @@ xiao_net_ver_2/
 cd synthetic_input
 
 # Generate a batch of synthetic seismograms
-python batch_generate_synthetic_3c.py
+python P002_batch_generate_synthetic_3c.py
 
 # Pack into SeisBench format
-python pack_to_seisbench.py
+python P003_pack_to_seisbench.py
 
 # Verify the dataset
-python test_seisbench_dataset.py
+python T001_test_seisbench_dataset.py
 ```
 
 ### 2. Configure Generation Parameters

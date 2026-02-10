@@ -6,7 +6,7 @@ This script demonstrates how to load the packed synthetic dataset
 and visualize sample waveforms with phase picks.
 
 Usage:
-    python test_seisbench_dataset.py
+    python T001_test_seisbench_dataset.py
 """
 
 import numpy as np

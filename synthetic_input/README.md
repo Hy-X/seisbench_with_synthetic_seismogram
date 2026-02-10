@@ -38,7 +38,7 @@ Edit **`Syn_Config.json`** to set generation parameters:
 #### Single Seismogram (for testing)
 
 ```bash
-python generate_synthetic_3c_seismogram.py
+python P001_generate_synthetic_3c_seismogram.py
 ```
 
 **Output**: Single 3-component seismogram with visualization
@@ -46,7 +46,7 @@ python generate_synthetic_3c_seismogram.py
 #### Batch Generation (for training datasets)
 
 ```bash
-python batch_generate_synthetic_3c.py
+python P002_batch_generate_synthetic_3c.py
 ```
 
 **Output**:
@@ -69,7 +69,7 @@ synthetic_output/
 ### Step 3: Pack to SeisBench Format
 
 ```bash
-python pack_to_seisbench.py
+python P003_pack_to_seisbench.py
 ```
 
 **Output**:
@@ -88,7 +88,7 @@ python pack_to_seisbench.py
 ### Step 4: Validate Dataset
 
 ```bash
-python test_seisbench_dataset.py
+python T001_test_seisbench_dataset.py
 ```
 
 **Output**:
@@ -99,7 +99,7 @@ python test_seisbench_dataset.py
 
 ## Scripts Reference
 
-### `generate_synthetic_3c_seismogram.py`
+### `P001_generate_synthetic_3c_seismogram.py`
 
 Generates a single 3-component synthetic seismogram with realistic wave propagation.
 
@@ -115,7 +115,7 @@ Generates a single 3-component synthetic seismogram with realistic wave propagat
 - **Noise**: Realistic frequency spectrum, added to all components
 - **Coda**: Exponentially decaying tail following main arrivals
 
-### `batch_generate_synthetic_3c.py`
+### `P002_batch_generate_synthetic_3c.py`
 
 Batch generation wrapper for creating large training datasets.
 
@@ -139,7 +139,7 @@ Batch generation wrapper for creating large training datasets.
 }
 ```
 
-### `pack_to_seisbench.py`
+### `P003_pack_to_seisbench.py`
 
 Converts synthetic data to SeisBench HDF5/CSV format.
 
@@ -158,7 +158,7 @@ Converts synthetic data to SeisBench HDF5/CSV format.
 - `station_code`: Station identifier (synthetic)
 - `path_trace_Z/N/E`: HDF5 internal paths
 
-### `test_seisbench_dataset.py`
+### `T001_test_seisbench_dataset.py`
 
 Validates the packed SeisBench dataset.
 
@@ -179,7 +179,7 @@ Validates the packed SeisBench dataset.
 
 ### Custom Wave Parameters
 
-Modify wave generation in `generate_synthetic_3c_seismogram.py`:
+Modify wave generation in `P001_generate_synthetic_3c_seismogram.py`:
 
 ```python
 # Adjust P-wave polarization
@@ -202,7 +202,7 @@ s_z, s_n, s_e = generate_s_wave_3c(
 Control noise characteristics:
 
 ```python
-# In generate_synthetic_3c_seismogram.py
+# In P001_generate_synthetic_3c_seismogram.py
 def add_noise_3c(n_samples, noise_level, sample_rate):
     # Add custom frequency-dependent noise
     freqs = np.fft.rfftfreq(n_samples, 1/sample_rate)
@@ -218,7 +218,7 @@ def add_noise_3c(n_samples, noise_level, sample_rate):
 Simulate different event magnitudes:
 
 ```python
-# In batch_generate_synthetic_3c.py
+# In P002_batch_generate_synthetic_3c.py
 def generate_with_variable_magnitude():
     for i in range(num_seismograms):
         magnitude_scale = np.random.uniform(0.5, 2.0)
@@ -290,13 +290,13 @@ For 10,000 traces: ~300 MB total
 ### Issue: No synthetic output files found
 
 ```
-Solution: Run batch_generate_synthetic_3c.py first before packing
+Solution: Run P002_batch_generate_synthetic_3c.py first before packing
 ```
 
 ### Issue: HDF5 file already exists
 
 ```python
-# In pack_to_seisbench.py, set overwrite flag:
+# In P003_pack_to_seisbench.py, set overwrite flag:
 writer = sbd.WaveformDataWriter(metadata, overwrite=True)
 ```
 
@@ -340,7 +340,7 @@ for batch in loader:
 ## Best Practices
 
 1. **Start Small**: Test with 10-20 seismograms before large batches
-2. **Validate Often**: Run test_seisbench_dataset.py after each packing
+2. **Validate Often**: Run T001_test_seisbench_dataset.py after each packing
 3. **Version Control**: Keep Syn_Config.json in version control
 4. **Document Changes**: Update batch_summary.json with generation notes
 5. **Backup Data**: Store precious synthetic datasets before regeneration
