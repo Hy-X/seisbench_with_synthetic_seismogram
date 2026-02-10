@@ -16,8 +16,19 @@ This repository implements a complete workflow for seismic phase picking using a
 
 ## Installation
 
+### Quick Install
 ```bash
 pip install -r requirements.txt
+```
+
+### Training Requirements
+- **PyTorch (torch)**: Required for model training and inference
+- **SeisBench**: Optional (listed but not currently used; code is SeisBench-compatible)
+- See [TRAINING_REQUIREMENTS.md](TRAINING_REQUIREMENTS.md) for detailed information
+
+### Minimal Setup (if you don't need all features)
+```bash
+pip install torch>=1.10.0 numpy>=1.21.0 scipy>=1.7.0 obspy>=1.3.0 matplotlib>=3.4.0
 ```
 
 ## Quick Start
