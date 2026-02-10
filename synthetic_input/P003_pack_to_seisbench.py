@@ -39,6 +39,80 @@ import seisbench.data as sbd
 import seisbench.util as sbu
 
 
+def load_config(config_path: str = 'Syn_Config.json') -> dict:
+    """
+    Load configuration from JSON file.
+    
+    Args:
+        config_path: Path to configuration JSON file
+        
+    Returns:
+        Configuration dictionary
+        
+    Raises:
+        FileNotFoundError: If config file doesn't exist
+    """
+    if not os.path.isabs(config_path):
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        config_path = os.path.join(script_dir, config_path)
+    
+    with open(config_path, 'r') as f:
+        return json.load(f)
+
+
+def assign_dataset_splits(
+    n_events: int,
+    split_ratios: Optional[Dict[str, float]] = None,
+    random_seed: Optional[int] = None
+) -> List[str]:
+    """
+    Randomly assign dataset splits to events based on specified ratios.
+    
+    Args:
+        n_events: Number of events to split
+        split_ratios: Dictionary with 'train', 'dev', 'test' ratios (default: 0.7/0.15/0.15)
+        random_seed: Random seed for reproducibility (default: None)
+        
+    Returns:
+        List of split assignments ('train', 'dev', or 'test') for each event
+        
+    Raises:
+        ValueError: If split ratios don't sum to 1.0
+    """
+    # Default split ratios
+    if split_ratios is None:
+        split_ratios = {'train': 0.7, 'dev': 0.15, 'test': 0.15}
+    
+    # Validate ratios
+    ratio_sum = sum(split_ratios.values())
+    if not np.isclose(ratio_sum, 1.0, atol=1e-6):
+        raise ValueError(
+            f"Split ratios must sum to 1.0, got {ratio_sum}. "
+            f"Ratios: {split_ratios}"
+        )
+    
+    # Set random seed for reproducibility
+    if random_seed is not None:
+        np.random.seed(random_seed)
+    
+    # Calculate number of samples for each split
+    train_ratio = split_ratios.get('train', 0.7)
+    dev_ratio = split_ratios.get('dev', 0.15)
+    test_ratio = split_ratios.get('test', 0.15)
+    
+    n_train = int(np.floor(n_events * train_ratio))
+    n_dev = int(np.floor(n_events * dev_ratio))
+    n_test = n_events - n_train - n_dev  # Remainder goes to test
+    
+    # Create split assignments
+    splits = ['train'] * n_train + ['dev'] * n_dev + ['test'] * n_test
+    
+    # Shuffle to randomize
+    np.random.shuffle(splits)
+    
+    return splits
+
+
 def discover_synthetic_data() -> List[Dict]:
     """
     Discover all synthetic seismogram files and load their metadata.
@@ -137,7 +211,12 @@ def load_waveform_data(event: Dict, use_mseed: bool = True) -> Tuple[np.ndarray,
     return data_3c, sampling_rate
 
 
-def build_trace_metadata(event: Dict, data_3c: np.ndarray, sampling_rate: float) -> Dict:
+def build_trace_metadata(
+    event: Dict,
+    data_3c: np.ndarray,
+    sampling_rate: float,
+    split: str = 'train'
+) -> Dict:
     """
     Build metadata dictionary for a single trace following SeisBench conventions.
     
@@ -148,6 +227,7 @@ def build_trace_metadata(event: Dict, data_3c: np.ndarray, sampling_rate: float)
         event: Event dictionary from discover_synthetic_data()
         data_3c: Waveform array of shape (3, n_samples)
         sampling_rate: Sampling rate in Hz
+        split: Dataset split assignment ('train', 'dev', or 'test')
         
     Returns:
         Dictionary with trace metadata following SeisBench naming conventions
@@ -202,7 +282,7 @@ def build_trace_metadata(event: Dict, data_3c: np.ndarray, sampling_rate: float)
         'trace_snr_db': metadata.get('snr_db', 0.0),
         
         # Dataset split
-        'split': 'train',  # Default to training set
+        'split': split,
     }
     
     return trace_metadata
@@ -210,7 +290,8 @@ def build_trace_metadata(event: Dict, data_3c: np.ndarray, sampling_rate: float)
 
 def create_seisbench_dataset(
     events: List[Dict],
-    output_dir: str = '../data'
+    output_dir: str = '../data',
+    config: Optional[Dict] = None
 ) -> Path:
     """
     Create SeisBench dataset using the official WaveformDataWriter API.
@@ -225,6 +306,7 @@ def create_seisbench_dataset(
     Args:
         events: List of event dictionaries from discover_synthetic_data()
         output_dir: Output directory for dataset files (default: '../data')
+        config: Configuration dictionary with split ratios (default: None)
         
     Returns:
         Path to the output directory
@@ -242,6 +324,19 @@ def create_seisbench_dataset(
     print(f"\nCreating SeisBench dataset using WaveformDataWriter")
     print(f"  Output directory: {base_path}")
     print(f"  Number of events: {len(events)}")
+    
+    # Assign dataset splits based on configuration
+    split_ratios = None
+    random_seed = None
+    if config is not None:
+        split_ratios = config.get('dataset_split_ratios')
+        random_seed = config.get('random_seed')
+    
+    splits = assign_dataset_splits(len(events), split_ratios, random_seed)
+    
+    # Print split statistics
+    split_counts = {split: splits.count(split) for split in ['train', 'dev', 'test']}
+    print(f"  Dataset splits: train={split_counts['train']}, dev={split_counts['dev']}, test={split_counts['test']}")
     
     # Use WaveformDataWriter following SeisBench conventions
     # This is the official API method from seisbench.data
@@ -267,8 +362,11 @@ def create_seisbench_dataset(
                 # Load waveform data
                 data_3c, sampling_rate = load_waveform_data(event)
                 
+                # Get split assignment for this event
+                event_split = splits[i - 1]
+                
                 # Build metadata dictionary
-                trace_metadata = build_trace_metadata(event, data_3c, sampling_rate)
+                trace_metadata = build_trace_metadata(event, data_3c, sampling_rate, event_split)
                 
                 # Add trace to dataset using SeisBench writer
                 # The writer handles HDF5 writing and metadata collection
@@ -473,6 +571,22 @@ def main():
     print("Using Official WaveformDataWriter API")
     print("=" * 70)
     
+    # Load configuration
+    try:
+        config = load_config('Syn_Config.json')
+        print(f"\n✓ Loaded configuration from Syn_Config.json")
+        
+        # Print split ratios if available
+        if 'dataset_split_ratios' in config:
+            ratios = config['dataset_split_ratios']
+            print(f"  Split ratios: train={ratios.get('train', 0.7):.0%}, "
+                  f"dev={ratios.get('dev', 0.15):.0%}, test={ratios.get('test', 0.15):.0%}")
+        if 'random_seed' in config:
+            print(f"  Random seed: {config['random_seed']}")
+    except Exception as e:
+        print(f"\n⚠ Warning: Could not load config, using defaults: {e}")
+        config = None
+    
     # Discover synthetic data
     try:
         events = discover_synthetic_data()
@@ -483,7 +597,7 @@ def main():
     
     # Create SeisBench dataset using WaveformDataWriter
     try:
-        dataset_path = create_seisbench_dataset(events, output_dir='../data')
+        dataset_path = create_seisbench_dataset(events, output_dir='../data', config=config)
     except Exception as e:
         print(f"\n✗ Error creating dataset: {e}")
         import traceback
