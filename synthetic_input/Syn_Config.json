@@ -11,5 +11,5 @@
     "coda_amplitude": 0.3,
     "window_length": 10.0,
     "pre_arrival_time": 2.0,
-    "num_seismograms": 10
+    "num_seismograms": 12
 }
