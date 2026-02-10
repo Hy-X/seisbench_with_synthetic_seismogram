@@ -8,20 +8,37 @@ with simulated P and S phase arrivals using realistic seismic wave modeling.
 
 import numpy as np
 import matplotlib.pyplot as plt
+import json
+import os
 from obspy import Trace, Stream, UTCDateTime
 from obspy.signal.trigger import recursive_sta_lta
 from scipy.signal import gausspulse
 from typing import Tuple, Optional
 
 
-# Configuration constants
-SAMPLE_RATE = 100  # Hz
-DURATION = 20.0  # seconds
-P_ARRIVAL_TIME = 5.0  # seconds
-S_ARRIVAL_TIME = 10.0  # seconds
-P_FREQUENCY = 20.0  # Hz (High frequency for small microearthquakes)
-S_FREQUENCY = 10.0  # Hz
-NOISE_LEVEL = 0.15  # Higher noise relative to signal for small events
+# Load Configuration
+def load_config(config_path: str = 'Syn_Config.json') -> dict:
+    """Load configuration from JSON file."""
+    if not os.path.isabs(config_path):
+        # Resolve relative to the script location
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        config_path = os.path.join(script_dir, config_path)
+    
+    with open(config_path, 'r') as f:
+        return json.load(f)
+
+CONFIG = load_config()
+
+# Extract constants for default values
+SAMPLE_RATE = CONFIG.get('sample_rate', 100)
+DURATION = CONFIG.get('duration', 20.0)
+P_ARRIVAL_TIME = CONFIG.get('p_arrival_time', 5.0)
+S_ARRIVAL_TIME = CONFIG.get('s_arrival_time', 10.0)
+P_FREQUENCY = CONFIG.get('p_frequency', 20.0)
+S_FREQUENCY = CONFIG.get('s_frequency', 10.0)
+NOISE_LEVEL = CONFIG.get('noise_level', 0.15)
+WINDOW_LENGTH = CONFIG.get('window_length', 6.0)
+PRE_ARRIVAL_TIME = CONFIG.get('pre_arrival_time', 2.0)
 
 
 def generate_realistic_wave_packet(
@@ -75,7 +92,7 @@ def add_coda_waves(
     waveform: np.ndarray,
     s_arrival_sample: int,
     sample_rate: float,
-    amplitude: float = 0.3
+    amplitude: float = CONFIG.get('coda_amplitude', 0.3)
 ) -> np.ndarray:
     """
     Add realistic coda waves (scattered waves after S arrival).
@@ -199,8 +216,8 @@ def generate_synthetic_seismogram(
 def extract_phase_window(
     trace: Trace,
     arrival_time: float,
-    window_length: float = 6.0,
-    pre_arrival_time: float = 2.0,
+    window_length: float = WINDOW_LENGTH,
+    pre_arrival_time: float = PRE_ARRIVAL_TIME,
     normalize: str = 'max'
 ) -> Tuple[np.ndarray, np.ndarray]:
     """
@@ -283,7 +300,7 @@ def plot_seismogram(
     ax_full.set_xlim(0, time[-1])
     
     # 2. P-Wave Window (Independently Normalized)
-    t_p, data_p = extract_phase_window(trace, p_time, window_length=6.0, normalize='max')
+    t_p, data_p = extract_phase_window(trace, p_time, normalize='max')
     ax_p.plot(t_p, data_p, 'b-', linewidth=1)
     ax_p.axvline(0, color='k', linestyle=':', label='Arrival')
     ax_p.set_title('P-Wave Window (Max Normalized)', color='blue', fontweight='bold')
@@ -293,7 +310,7 @@ def plot_seismogram(
     ax_p.grid(True, alpha=0.3)
     
     # 3. S-Wave Window (Independently Normalized)
-    t_s, data_s = extract_phase_window(trace, s_time, window_length=6.0, normalize='max')
+    t_s, data_s = extract_phase_window(trace, s_time, normalize='max')
     ax_s.plot(t_s, data_s, 'r-', linewidth=1)
     ax_s.axvline(0, color='k', linestyle=':', label='Arrival')
     
@@ -318,6 +335,57 @@ def plot_seismogram(
         plt.show()
 
 
+def get_random_times(
+    duration: float, 
+    pre_time: float, 
+    window_length: float,
+    min_sep: float = 1.0
+) -> Tuple[float, float]:
+    """
+    Generate random P and S times within safe margins for window extraction.
+    
+    Args:
+        duration: Total signal duration
+        pre_time: Pre-arrival time required in window
+        window_length: Total length of phase window
+        min_sep: Minimum separation between P and S
+        
+    Returns:
+        p_time, s_time
+    """
+    # Safety margin: ensure we can extract full window at start and end
+    # We need: time >= pre_time
+    # We need: time + (window_length - pre_time) <= duration
+    
+    post_time = window_length - pre_time
+    start_margin = pre_time + 0.1  # small buffer
+    end_margin = post_time + 0.1   # small buffer
+    
+    # P Range
+    # Earliest P: start_margin
+    # Latest P: duration - end_margin - min_sep (leaving room for S)
+    latest_p = duration - end_margin - min_sep
+    
+    if latest_p <= start_margin:
+        print("Warning: Duration too tight for random margins. Using center.")
+        return duration * 0.3, duration * 0.6
+        
+    p_time = np.random.uniform(start_margin, latest_p)
+    
+    # S Range
+    # Earliest S: p_time + min_sep
+    # Latest S: duration - end_margin
+    latest_s = duration - end_margin
+    earliest_s = p_time + min_sep
+    
+    if latest_s <= earliest_s:
+         s_time = latest_s
+    else:
+         s_time = np.random.uniform(earliest_s, latest_s)
+         
+    return p_time, s_time
+
+
 def main():
     """
     Main function to generate and visualize realistic synthetic seismogram.
@@ -325,14 +393,27 @@ def main():
     print("=" * 60)
     print("Generating Realistic Synthetic Seismogram with ObsPy")
     print("=" * 60)
+    
+    # Randomize timestamps
+    p_time, s_time = get_random_times(DURATION, PRE_ARRIVAL_TIME, WINDOW_LENGTH)
+    
     print(f"Duration: {DURATION} s")
     print(f"Sample rate: {SAMPLE_RATE} Hz")
-    print(f"P-wave arrival: {P_ARRIVAL_TIME} s @ {P_FREQUENCY} Hz")
-    print(f"S-wave arrival: {S_ARRIVAL_TIME} s @ {S_FREQUENCY} Hz")
+    print(f"Randomized P-wave arrival: {p_time:.2f} s")
+    print(f"Randomized S-wave arrival: {s_time:.2f} s")
+    print(f"P-S Separation: {s_time - p_time:.2f} s")
     print(f"Total samples: {int(DURATION * SAMPLE_RATE)}")
     
     # Generate synthetic data
-    trace, time = generate_synthetic_seismogram()
+    trace, time = generate_synthetic_seismogram(
+        duration=DURATION,
+        sample_rate=SAMPLE_RATE,
+        p_time=p_time,
+        s_time=s_time,
+        p_freq=P_FREQUENCY,
+        s_freq=S_FREQUENCY,
+        noise_level=NOISE_LEVEL
+    )
     
     # Create stream (container for traces)
     stream = Stream(traces=[trace])
@@ -370,7 +451,12 @@ def main():
     
     # Plot the seismogram
     print(f"\nGenerating plot...")
-    plot_seismogram(trace, time, save_path='synthetic_seismogram.png')
+    plot_seismogram(
+        trace, time, 
+        p_time=p_time, 
+        s_time=s_time, 
+        save_path='synthetic_seismogram.png'
+    )
     
     print(f"\n{'=' * 60}")
     print(f"Generation complete!")

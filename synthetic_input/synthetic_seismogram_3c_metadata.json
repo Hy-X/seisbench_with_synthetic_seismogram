@@ -1,0 +1,16 @@
+{
+    "event_id": "SYNTHETIC_001",
+    "start_time": "1970-01-01T00:00:00",
+    "sample_rate": 100,
+    "duration": 16.0,
+    "p_arrival_sample": 466,
+    "s_arrival_sample": 911,
+    "p_arrival_time": 4.667752499940432,
+    "s_arrival_time": 9.11652552016363,
+    "snr_db": 6.020599913279624,
+    "channels": [
+        "HHZ",
+        "HHN",
+        "HHE"
+    ]
+}

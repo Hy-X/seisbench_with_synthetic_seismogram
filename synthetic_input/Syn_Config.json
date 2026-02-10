@@ -1,0 +1,12 @@
+{
+    "sample_rate": 100,
+    "duration": 16.0,
+    "p_arrival_time": 2.0,
+    "s_arrival_time": 8.0,
+    "p_frequency": 20.0,
+    "s_frequency": 10.0,
+    "noise_level": 0.25,
+    "coda_amplitude": 0.3,
+    "window_length": 6.0,
+    "pre_arrival_time": 2.0
+}
