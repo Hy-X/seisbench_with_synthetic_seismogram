@@ -19,9 +19,9 @@ SAMPLE_RATE = 100  # Hz
 DURATION = 20.0  # seconds
 P_ARRIVAL_TIME = 5.0  # seconds
 S_ARRIVAL_TIME = 10.0  # seconds
-P_FREQUENCY = 8.0  # Hz (typical for local earthquakes)
-S_FREQUENCY = 4.0  # Hz (typically lower than P)
-NOISE_LEVEL = 0.05  # Background noise amplitude relative to signal
+P_FREQUENCY = 20.0  # Hz (High frequency for small microearthquakes)
+S_FREQUENCY = 10.0  # Hz
+NOISE_LEVEL = 0.15  # Higher noise relative to signal for small events
 
 
 def generate_realistic_wave_packet(
@@ -99,11 +99,11 @@ def add_coda_waves(
         coda_length = n_samples - coda_start
         t = np.arange(coda_length) / sample_rate
         
-        # Multiple frequency components with decay
+        # Multiple frequency components with decay (higher freq for small events)
         coda = np.zeros(coda_length)
-        for freq in [2, 3, 5, 7, 10]:  # Multiple frequency components
+        for freq in [5, 8, 12, 15, 20]:  # Higher frequency components
             phase = 2 * np.pi * freq * t + np.random.uniform(0, 2*np.pi)
-            decay = np.exp(-0.2 * t)
+            decay = np.exp(-0.3 * t)  # Faster decay for small events
             coda += np.sin(phase) * decay
         
         coda *= amplitude / 5  # Normalize by number of components
@@ -170,14 +170,14 @@ def generate_synthetic_seismogram(
     # Add P-wave arrival (smaller amplitude, higher frequency)
     p_wave = generate_realistic_wave_packet(
         n_samples, p_sample, p_freq, sample_rate, 
-        amplitude=0.4, decay_rate=0.5
+        amplitude=0.5, decay_rate=3.0  # Fast decay for impulsive source
     )
     waveform += p_wave
     
     # Add S-wave arrival (larger amplitude, lower frequency, slower decay)
     s_wave = generate_realistic_wave_packet(
         n_samples, s_sample, s_freq, sample_rate,
-        amplitude=1.0, decay_rate=0.3
+        amplitude=1.0, decay_rate=1.5  # Fast decay for impulsive source
     )
     waveform += s_wave
     
@@ -196,6 +196,65 @@ def generate_synthetic_seismogram(
     return trace, time
 
 
+def extract_phase_window(
+    trace: Trace,
+    arrival_time: float,
+    window_length: float = 6.0,
+    pre_arrival_time: float = 2.0,
+    normalize: str = 'max'
+) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Extract a short window centered around a phase arrival with normalization.
+    
+    Args:
+        trace: Full waveform trace
+        arrival_time: Phase arrival time in seconds
+        window_length: Length of window in seconds
+        pre_arrival_time: Time to include before the arrival
+        normalize: Normalization strategy ('max', 'zscore', 'none')
+        
+    Returns:
+        t_window: Relative time array (0 at arrival)
+        data_window: Waveform slice (normalized)
+    """
+    dt = trace.stats.sampling_rate
+    sr = trace.stats.sampling_rate
+    
+    start_time = arrival_time - pre_arrival_time
+    end_time = start_time + window_length
+    
+    # Slice using ObsPy's time handling (handles sub-sample precision)
+    slice_trace = trace.slice(
+        starttime=trace.stats.starttime + start_time,
+        endtime=trace.stats.starttime + end_time
+    )
+    
+    # Ensure exact sample count
+    target_samples = int(window_length * sr)
+    data = slice_trace.data.copy()  # Copy to avoid modifying original trace
+    
+    if len(data) != target_samples:
+        if len(data) > target_samples:
+            data = data[:target_samples]
+        else:
+            data = np.pad(data, (0, target_samples - len(data)), 'constant')
+            
+    # Apply normalization relative to this specific window
+    if normalize == 'max':
+        peak_amp = np.max(np.abs(data))
+        if peak_amp > 0:
+            data = data / peak_amp
+    elif normalize == 'zscore':
+        std_val = np.std(data)
+        if std_val > 0:
+            data = (data - np.mean(data)) / std_val
+            
+    # Create relative time vector (0 is the arrival)
+    t_vec = np.linspace(-pre_arrival_time, window_length - pre_arrival_time, len(data))
+    
+    return t_vec, data
+
+
 def plot_seismogram(
     trace: Trace,
     time: np.ndarray,
@@ -204,67 +263,57 @@ def plot_seismogram(
     save_path: Optional[str] = None
 ) -> None:
     """
-    Plot realistic synthetic seismogram with phase markers and STA/LTA.
-    
-    Creates a publication-quality plot showing:
-    - Raw waveform
-    - P and S arrival markers
-    - Optional STA/LTA characteristic function
-    
-    Args:
-        trace: ObsPy Trace object
-        time: Time array in seconds
-        p_time: P-wave arrival time in seconds
-        s_time: S-wave arrival time in seconds
-        save_path: Optional path to save figure (e.g., 'seismogram.png')
+    Plot full seismogram and focused phase windows (normalized independently).
     """
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 7), 
-                                     gridspec_kw={'height_ratios': [2, 1]})
+    # Create figure with 3 panels: Full trace, P-window, S-window
+    fig = plt.figure(figsize=(12, 8))
+    gs = fig.add_gridspec(2, 2)
     
-    waveform = trace.data
+    ax_full = fig.add_subplot(gs[0, :])
+    ax_p = fig.add_subplot(gs[1, 0])
+    ax_s = fig.add_subplot(gs[1, 1])
     
-    # Plot waveform
-    ax1.plot(time, waveform, 'k-', linewidth=0.7, label='Waveform')
+    # 1. Full Waveform (Raw Amplitude)
+    ax_full.plot(time, trace.data, 'k-', linewidth=0.5, label='Full Trace (Raw)')
+    ax_full.axvline(p_time, color='blue', linestyle='--', alpha=0.7, label='P')
+    ax_full.axvline(s_time, color='red', linestyle='--', alpha=0.7, label='S')
+    ax_full.set_title(f'Full Synthetic Event ({DURATION}s)', fontweight='bold')
+    ax_full.set_ylabel('Raw Amplitude')
+    ax_full.legend(loc='upper right')
+    ax_full.set_xlim(0, time[-1])
     
-    # Mark P and S arrivals
-    ax1.axvline(p_time, color='blue', linestyle='--', linewidth=2, 
-                alpha=0.7, label='P-wave arrival')
-    ax1.axvline(s_time, color='red', linestyle='--', linewidth=2, 
-                alpha=0.7, label='S-wave arrival')
+    # 2. P-Wave Window (Independently Normalized)
+    t_p, data_p = extract_phase_window(trace, p_time, window_length=6.0, normalize='max')
+    ax_p.plot(t_p, data_p, 'b-', linewidth=1)
+    ax_p.axvline(0, color='k', linestyle=':', label='Arrival')
+    ax_p.set_title('P-Wave Window (Max Normalized)', color='blue', fontweight='bold')
+    ax_p.set_xlabel('Time relative to P (s)')
+    ax_p.set_ylabel('Norm. Amplitude')
+    ax_p.set_ylim(-1.1, 1.1)
+    ax_p.grid(True, alpha=0.3)
     
-    # Labels and formatting
-    ax1.set_ylabel('Amplitude', fontsize=11)
-    ax1.set_title(f'Synthetic Seismogram - {trace.stats.station}.{trace.stats.channel} | '
-                  f'{trace.stats.sampling_rate} Hz', 
-                  fontsize=13, fontweight='bold')
-    ax1.legend(loc='upper right', fontsize=10)
-    ax1.grid(True, alpha=0.3, linestyle=':')
-    ax1.set_xlim(0, time[-1])
+    # 3. S-Wave Window (Independently Normalized)
+    t_s, data_s = extract_phase_window(trace, s_time, window_length=6.0, normalize='max')
+    ax_s.plot(t_s, data_s, 'r-', linewidth=1)
+    ax_s.axvline(0, color='k', linestyle=':', label='Arrival')
     
-    # Plot STA/LTA characteristic function
-    sta = 0.5  # seconds
-    lta = 5.0  # seconds
-    cft = recursive_sta_lta(waveform, int(sta * trace.stats.sampling_rate), 
-                            int(lta * trace.stats.sampling_rate))
-    
-    ax2.plot(time, cft, 'g-', linewidth=0.7, label='STA/LTA')
-    ax2.axvline(p_time, color='blue', linestyle='--', linewidth=2, alpha=0.7)
-    ax2.axvline(s_time, color='red', linestyle='--', linewidth=2, alpha=0.7)
-    ax2.axhline(2.0, color='orange', linestyle=':', linewidth=1.5, 
-                label='Trigger threshold', alpha=0.7)
-    
-    ax2.set_xlabel('Time (s)', fontsize=11)
-    ax2.set_ylabel('STA/LTA Ratio', fontsize=11)
-    ax2.legend(loc='upper right', fontsize=9)
-    ax2.grid(True, alpha=0.3, linestyle=':')
-    ax2.set_xlim(0, time[-1])
+    # Check if P-wave is visible in S-window (if S-P < 2s)
+    p_relative = p_time - s_time
+    if t_s[0] < p_relative < t_s[-1]:
+         ax_s.axvline(p_relative, color='blue', linestyle='--', alpha=0.5, label='P-Leakage')
+
+    ax_s.set_title('S-Wave Window (Max Normalized)', color='red', fontweight='bold')
+    ax_s.set_xlabel('Time relative to S (s)')
+    ax_s.set_ylabel('Norm. Amplitude')
+    ax_s.set_ylim(-1.1, 1.1)
+    ax_s.grid(True, alpha=0.3)
     
     plt.tight_layout()
     
     if save_path:
         plt.savefig(save_path, dpi=300, bbox_inches='tight')
         print(f"Figure saved to: {save_path}")
-        plt.close()  # Close figure to prevent blocking
+        plt.close()
     else:
         plt.show()
 
