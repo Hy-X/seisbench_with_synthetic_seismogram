@@ -158,16 +158,11 @@ def create_hdf5_dataset(
     print(f"  Number of traces: {len(events)}")
     
     with h5py.File(output_file, 'w') as hdf:
-        # Store dataset-level metadata
-        hdf.attrs['format_version'] = '1.0'
-        hdf.attrs['dataset_name'] = 'synthetic_seismograms'
-        hdf.attrs['creation_time'] = datetime.now().isoformat()
-        hdf.attrs['num_traces'] = len(events)
-        
         # Create data_format group with SeisBench specifications
+        # This tells SeisBench how to interpret the data
         data_format = hdf.create_group('data_format')
         data_format.attrs['dimension_order'] = 'CW'  # Channel, Width (samples)
-        data_format.attrs['component_order'] = 'ZNE'
+        data_format.attrs['component_order'] = 'ZNE'  # Vertical, North, East
         
         for i, event in enumerate(events, 1):
             event_id = event['event_id']
@@ -181,31 +176,29 @@ def create_hdf5_dataset(
                 continue
             
             # Create trace name (SeisBench convention)
-            # Format: network.station.location.channel or simply event_id
+            # Use simple event_id as dataset name at root level
             trace_name = event_id
             
-            # Create a group for this trace (SeisBench format)
-            trace_group = hdf.create_group(trace_name)
-            
-            # Create dataset for waveform data within the trace group
-            dset = trace_group.create_dataset(
-                'data',
+            # Create dataset directly at root level (SeisBench simple format)
+            # This is simpler than bucketed format used by large datasets
+            dset = hdf.create_dataset(
+                trace_name,
                 data=data_3c,
                 dtype='float32',
                 compression=compression,
                 compression_opts=compression_opts
             )
             
-            # Store trace-level metadata as attributes on the group
-            trace_group.attrs['sampling_rate'] = sampling_rate
-            trace_group.attrs['station'] = metadata.get('station', 'SYN')
-            trace_group.attrs['network'] = metadata.get('network', 'XX')
-            trace_group.attrs['event_id'] = event_id
-            trace_group.attrs['p_arrival_sample'] = metadata.get('p_arrival_sample', -1)
-            trace_group.attrs['s_arrival_sample'] = metadata.get('s_arrival_sample', -1)
-            trace_group.attrs['p_arrival_time'] = metadata.get('p_arrival_time', -1.0)
-            trace_group.attrs['s_arrival_time'] = metadata.get('s_arrival_time', -1.0)
-            trace_group.attrs['snr_db'] = metadata.get('snr_db', 0.0)
+            # Store trace-level metadata as dataset attributes
+            dset.attrs['sampling_rate'] = sampling_rate
+            dset.attrs['station'] = metadata.get('station', 'SYN')
+            dset.attrs['network'] = metadata.get('network', 'XX')
+            dset.attrs['event_id'] = event_id
+            dset.attrs['p_arrival_sample'] = metadata.get('p_arrival_sample', -1)
+            dset.attrs['s_arrival_sample'] = metadata.get('s_arrival_sample', -1)
+            dset.attrs['p_arrival_time'] = metadata.get('p_arrival_time', -1.0)
+            dset.attrs['s_arrival_time'] = metadata.get('s_arrival_time', -1.0)
+            dset.attrs['snr_db'] = metadata.get('snr_db', 0.0)
             
             if i % 10 == 0 or i == len(events):
                 print(f"  Progress: {i}/{len(events)} traces written")
@@ -220,20 +213,33 @@ def create_csv_metadata(
     """
     Create CSV metadata file with phase picks in SeisBench format.
     
-    The CSV follows SeisBench conventions with columns:
-    - trace_name: Unique identifier for each trace
-    - station_code: Station code
+    The CSV follows SeisBench conventions matching real datasets with columns:
     - network_code: Network code
-    - trace_sampling_rate_hz: Sampling rate in Hz
-    - trace_npts: Number of samples
-    - trace_start_time: Start time (ISO format or relative)
-    - trace_p_arrival_sample: P-wave arrival sample index
-    - trace_s_arrival_sample: S-wave arrival sample index
-    - trace_p_status: P-pick status ('manual', 'automatic', etc.)
-    - trace_s_status: S-pick status
-    - trace_p_weight: Pick weight/uncertainty for P
-    - trace_s_weight: Pick weight/uncertainty for S
+    - receiver_code: Station/receiver code
+    - receiver_type: Component channel (HHZ, HHN, HHE, etc.)
+    - receiver_latitude: Station latitude (degrees)
+    - receiver_longitude: Station longitude (degrees)
+    - receiver_elevation_m: Station elevation (meters)
+    - p_arrival_sample: P-wave arrival sample index
+    - p_status: P-pick status ('manual', 'automatic')
+    - p_weight: Pick weight/confidence for P (0-1)
+    - p_travel_sec: P-wave travel time in seconds
+    - s_arrival_sample: S-wave arrival sample index
+    - s_status: S-pick status
+    - s_weight: Pick weight/confidence for S (0-1)
+    - source_id: Unique event identifier
+    - source_origin_time: Event origin time (ISO format)
+    - source_latitude: Event latitude (degrees)
+    - source_longitude: Event longitude (degrees)
+    - source_depth_km: Event depth (kilometers)
+    - source_magnitude: Event magnitude
+    - source_magnitude_type: Magnitude type (ML, Mw, etc.)
     - snr_db: Signal-to-noise ratio in dB
+    - trace_start_time: Trace start time (ISO format)
+    - trace_category: Category (earthquake_local, noise, etc.)
+    - trace_name: Unique trace identifier
+    
+    Note: Creates 3 rows per event (one per component: Z, N, E)
     
     Args:
         events: List of event dictionaries
@@ -249,11 +255,15 @@ def create_csv_metadata(
     
     metadata_list = []
     
+    # Component mapping for receiver_type
+    components = ['HHZ', 'HHN', 'HHE']
+    component_suffixes = ['Z', 'N', 'E']
+    
     for event in events:
         event_id = event['event_id']
         metadata = event['metadata']
         
-        # Load data to get number of samples
+        # Load data to get sampling info
         try:
             data_3c, sampling_rate = load_waveform_data(event)
             npts = data_3c.shape[1]
@@ -261,28 +271,78 @@ def create_csv_metadata(
             print(f"  Warning: Could not load {event_id} for metadata: {e}")
             continue
         
-        # Build metadata row following SeisBench conventions
-        row = {
-            'trace_name': event_id,
-            'station_code': metadata.get('station', 'SYN'),
-            'network_code': metadata.get('network', 'XX'),
-            'trace_sampling_rate_hz': sampling_rate,
-            'trace_npts': npts,
-            'trace_start_time': metadata.get('start_time', '1970-01-01T00:00:00'),
-            'trace_p_arrival_sample': metadata.get('p_arrival_sample', -1),
-            'trace_s_arrival_sample': metadata.get('s_arrival_sample', -1),
-            'trace_p_arrival_time': metadata.get('p_arrival_time', -1.0),
-            'trace_s_arrival_time': metadata.get('s_arrival_time', -1.0),
-            'trace_p_status': 'manual',  # Synthetic = known ground truth
-            'trace_s_status': 'manual',
-            'trace_p_weight': 1.0,  # High confidence (synthetic)
-            'trace_s_weight': 1.0,
-            'snr_db': metadata.get('snr_db', 0.0),
-            'source_type': 'synthetic',
-            'source_id': event_id
-        }
+        station_code = metadata.get('station', 'SYN')
+        network_code = metadata.get('network', 'XX')
+        start_time = metadata.get('start_time', '1970-01-01T00:00:00')
         
-        metadata_list.append(row)
+        # Get phase arrivals
+        p_arrival_sample = metadata.get('p_arrival_sample', -1)
+        s_arrival_sample = metadata.get('s_arrival_sample', -1)
+        p_arrival_time = metadata.get('p_arrival_time', -1.0)
+        s_arrival_time = metadata.get('s_arrival_time', -1.0)
+        snr_db = metadata.get('snr_db', 0.0)
+        
+        # Calculate travel times (from trace start)
+        p_travel_sec = p_arrival_time if p_arrival_sample >= 0 else -1.0
+        s_travel_sec = s_arrival_time if s_arrival_sample >= 0 else -1.0
+        
+        # Default synthetic source parameters
+        # Use reasonable values for synthetic events
+        receiver_lat = 35.0  # Default receiver location
+        receiver_lon = -97.0
+        receiver_elev = 500.0
+        
+        source_lat = 36.0  # Default source location
+        source_lon = -98.0
+        source_depth_km = 5.0
+        source_magnitude = 2.0
+        source_magnitude_type = 'ML'
+        
+        # Create one row per component (3C data)
+        for comp_idx, (component, suffix) in enumerate(zip(components, component_suffixes)):
+            # Build trace name following SeisBench convention
+            # Format: network.station.component_type.component_order.start_time
+            trace_name = f"{network_code}.{station_code}.{component}.{start_time.replace(':', '').replace('-', '').replace('T', 'T')}"
+            
+            row = {
+                'network_code': network_code,
+                'receiver_code': station_code,
+                'receiver_type': component,
+                'receiver_latitude': receiver_lat,
+                'receiver_longitude': receiver_lon,
+                'receiver_elevation_m': receiver_elev,
+                'p_arrival_sample': p_arrival_sample,
+                'p_status': 'manual' if p_arrival_sample >= 0 else '',
+                'p_weight': 1.0 if p_arrival_sample >= 0 else 0.0,
+                'p_travel_sec': p_travel_sec,
+                's_arrival_sample': s_arrival_sample,
+                's_status': 'manual' if s_arrival_sample >= 0 else '',
+                's_weight': 1.0 if s_arrival_sample >= 0 else 0.0,
+                'source_id': event_id,
+                'source_origin_time': start_time,
+                'source_origin_uncertainty_sec': '',
+                'source_latitude': source_lat,
+                'source_longitude': source_lon,
+                'source_error_sec': '',
+                'source_gap_deg': '',
+                'source_horizontal_uncertainty_km': '',
+                'source_depth_km': source_depth_km,
+                'source_depth_uncertainty_km': '',
+                'source_magnitude': source_magnitude,
+                'source_magnitude_type': source_magnitude_type,
+                'source_magnitude_author': 'synthetic',
+                'source_mechanism_strike_dip_rake': '',
+                'source_distance_deg': '',
+                'source_distance_km': '',
+                'back_azimuth_deg': '',
+                'snr_db': snr_db,
+                'coda_end_sample': '',
+                'trace_start_time': start_time,
+                'trace_category': 'earthquake_local',
+                'trace_name': trace_name
+            }
+            
+            metadata_list.append(row)
     
     # Create DataFrame
     df = pd.DataFrame(metadata_list)
@@ -291,8 +351,9 @@ def create_csv_metadata(
     df.to_csv(output_file, index=False)
     
     print(f"✓ CSV metadata created: {output_file}")
-    print(f"  Total traces: {len(df)}")
-    print(f"  Columns: {', '.join(df.columns)}")
+    print(f"  Total trace components: {len(df)} (3 per event)")
+    print(f"  Events: {len(df) // 3}")
+    print(f"  Columns: {len(df.columns)}")
     
     return df
 
@@ -318,38 +379,43 @@ def print_dataset_summary(
         print(f"HDF5 file size: {size_mb:.2f} MB")
     
     # Basic statistics
-    print(f"Total traces: {len(df)}")
-    print(f"Stations: {df['station_code'].nunique()}")
+    num_events = len(df) // 3  # 3 components per event
+    print(f"Total trace components: {len(df)} (3 per event)")
+    print(f"Total events: {num_events}")
+    print(f"Stations: {df['receiver_code'].nunique()}")
     print(f"Networks: {df['network_code'].nunique()}")
     
-    # Sampling rate
-    print(f"Sampling rate: {df['trace_sampling_rate_hz'].iloc[0]:.0f} Hz")
-    print(f"Trace length: {df['trace_npts'].iloc[0]} samples ({df['trace_npts'].iloc[0] / df['trace_sampling_rate_hz'].iloc[0]:.1f} s)")
-    
-    # Pick statistics
-    print(f"\nPhase arrival statistics:")
-    print(f"  P-arrivals: {(df['trace_p_arrival_sample'] >= 0).sum()}/{len(df)}")
-    print(f"  S-arrivals: {(df['trace_s_arrival_sample'] >= 0).sum()}/{len(df)}")
+    # Pick statistics (check first row of each event)
+    event_rows = df[::3]  # Every 3rd row (one per event)
+    print(f"\nPhase arrival statistics (per event):")
+    print(f"  P-arrivals: {(event_rows['p_arrival_sample'] >= 0).sum()}/{num_events}")
+    print(f"  S-arrivals: {(event_rows['s_arrival_sample'] >= 0).sum()}/{num_events}")
     
     # P and S sample ranges
-    p_samples = df[df['trace_p_arrival_sample'] >= 0]['trace_p_arrival_sample']
-    s_samples = df[df['trace_s_arrival_sample'] >= 0]['trace_s_arrival_sample']
+    p_samples = event_rows[event_rows['p_arrival_sample'] >= 0]['p_arrival_sample']
+    s_samples = event_rows[event_rows['s_arrival_sample'] >= 0]['s_arrival_sample']
     
     if len(p_samples) > 0:
         print(f"  P-sample range: {p_samples.min():.0f} - {p_samples.max():.0f}")
-        print(f"  P-time range: {p_samples.min()/df['trace_sampling_rate_hz'].iloc[0]:.2f} - {p_samples.max()/df['trace_sampling_rate_hz'].iloc[0]:.2f} s")
+        p_travel = event_rows[event_rows['p_arrival_sample'] >= 0]['p_travel_sec']
+        print(f"  P-time range: {p_travel.min():.2f} - {p_travel.max():.2f} s")
     
     if len(s_samples) > 0:
         print(f"  S-sample range: {s_samples.min():.0f} - {s_samples.max():.0f}")
-        print(f"  S-time range: {s_samples.min()/df['trace_sampling_rate_hz'].iloc[0]:.2f} - {s_samples.max()/df['trace_sampling_rate_hz'].iloc[0]:.2f} s")
     
     # SNR statistics
     if 'snr_db' in df.columns:
         print(f"\nSNR statistics:")
-        print(f"  Mean: {df['snr_db'].mean():.2f} dB")
-        print(f"  Std:  {df['snr_db'].std():.2f} dB")
-        print(f"  Min:  {df['snr_db'].min():.2f} dB")
-        print(f"  Max:  {df['snr_db'].max():.2f} dB")
+        print(f"  Mean: {event_rows['snr_db'].mean():.2f} dB")
+        print(f"  Std:  {event_rows['snr_db'].std():.2f} dB")
+        print(f"  Min:  {event_rows['snr_db'].min():.2f} dB")
+        print(f"  Max:  {event_rows['snr_db'].max():.2f} dB")
+    
+    # Component breakdown
+    print(f"\nComponent breakdown:")
+    for comp in df['receiver_type'].unique():
+        count = (df['receiver_type'] == comp).sum()
+        print(f"  {comp}: {count} traces")
     
     print("=" * 70)
 
@@ -384,25 +450,46 @@ def verify_dataset(
         df = pd.read_csv(csv_file)
         print(f"  ✓ CSV loaded: {len(df)} rows")
         
+        # Check CSV has 3 components per event
+        num_events = len(df) // 3
+        if len(df) % 3 != 0:
+            print(f"  ⚠ Warning: CSV has {len(df)} rows, not divisible by 3 (expected 3 components per event)")
+        
         # Open HDF5 and check traces
         with h5py.File(hdf5_file, 'r') as hdf:
-            num_traces = len(hdf.keys())
-            print(f"  ✓ HDF5 loaded: {num_traces} traces")
+            # Count actual trace datasets (exclude data_format group)
+            trace_keys = [k for k in hdf.keys() if k != 'data_format']
+            num_traces = len(trace_keys)
+            print(f"  ✓ HDF5 loaded: {num_traces} traces (events)")
             
-            # Check consistency
-            if len(df) != num_traces:
+            # Check consistency: CSV should have 3 rows per HDF5 trace (3 components)
+            if len(df) != num_traces * 3:
                 print(f"  ✗ Mismatch: CSV has {len(df)} rows but HDF5 has {num_traces} traces")
+                print(f"     Expected {num_traces * 3} CSV rows (3 per trace)")
                 return False
             
             # Check a few traces
-            for trace_name in list(hdf.keys())[:3]:
+            for trace_name in trace_keys[:3]:
                 data = hdf[trace_name][:]
                 if data.shape[0] != 3:
                     print(f"  ✗ Invalid shape for {trace_name}: {data.shape}")
                     return False
             
             print(f"  ✓ Trace shapes validated (3, n_samples)")
+            print(f"  ✓ CSV format validated (3 component rows per event)")
         
+        # Verify required columns exist
+        required_cols = [
+            'network_code', 'receiver_code', 'receiver_type',
+            'p_arrival_sample', 's_arrival_sample',
+            'trace_name', 'trace_category'
+        ]
+        missing_cols = [col for col in required_cols if col not in df.columns]
+        if missing_cols:
+            print(f"  ✗ Missing required columns: {missing_cols}")
+            return False
+        
+        print(f"  ✓ All required columns present")
         print("  ✓ Dataset verification passed!")
         return True
         
