@@ -1,0 +1,26 @@
+{
+    "event_id": "SYNTHETIC_009",
+    "station": "SYN",
+    "network": "XX",
+    "start_time": "1970-01-01T00:00:00",
+    "sample_rate": 100,
+    "duration": 30.0,
+    "p_arrival_sample": 1735,
+    "s_arrival_sample": 2160,
+    "p_arrival_time": 17.355184218805658,
+    "s_arrival_time": 21.605260603960723,
+    "snr_db": 6.7521457864635295,
+    "channels": [
+        "HHZ",
+        "HHN",
+        "HHE"
+    ],
+    "files": {
+        "mseed": [
+            "SYNTHETIC_009_synthetic_SYN_XX_HHZ.mseed",
+            "SYNTHETIC_009_synthetic_SYN_XX_HHN.mseed",
+            "SYNTHETIC_009_synthetic_SYN_XX_HHE.mseed"
+        ],
+        "npy": "SYNTHETIC_009_synthetic_SYN_XX_3C.npy"
+    }
+}
