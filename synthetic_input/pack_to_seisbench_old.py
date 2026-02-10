@@ -5,12 +5,11 @@ Pack synthetic seismograms into SeisBench HDF5 and CSV format.
 This script converts generated synthetic 3-component seismograms into the
 SeisBench data format for easy integration with SeisBench models and workflows.
 
-Uses the official SeisBench WaveformDataWriter API for proper dataset creation,
-following the reference example from SeisBench documentation.
+Uses the official SeisBench WaveformDataWriter API for proper dataset creation.
 
 Output:
-    - metadata.csv: Trace metadata with phase picks
-    - waveforms.hdf5: 3-component waveform data in HDF5 format
+    - waveforms.hdf5: Waveform data in HDF5 format
+    - metadata.csv: Metadata with phase picks in CSV format
 
 The format follows SeisBench conventions for compatibility with existing
 SeisBench models (e.g., PhaseNet, EQTransformer).
@@ -141,9 +140,6 @@ def build_trace_metadata(event: Dict, data_3c: np.ndarray, sampling_rate: float)
     """
     Build metadata dictionary for a single trace following SeisBench conventions.
     
-    Following the pattern from SeisBench reference example, metadata uses
-    prefixes like 'station_', 'trace_', 'source_' for different property types.
-    
     Args:
         event: Event dictionary from discover_synthetic_data()
         data_3c: Waveform array of shape (3, n_samples)
@@ -165,28 +161,28 @@ def build_trace_metadata(event: Dict, data_3c: np.ndarray, sampling_rate: float)
     
     # Build metadata dictionary with SeisBench conventions
     trace_metadata = {
-        # Station information (station_ prefix)
+        # Station information
         'station_network_code': network_code,
         'station_code': station_code,
         'station_location_code': '',
         
-        # Trace properties (trace_ prefix)
+        # Trace properties
         'trace_channel': 'HH',  # High-gain, high sample rate
         'trace_sampling_rate_hz': sampling_rate,
         'trace_npts': data_3c.shape[1],
         'trace_start_time': metadata.get('start_time', '1970-01-01T00:00:00'),
         
-        # Phase arrivals - P-wave (trace_ prefix)
+        # Phase arrivals (P-wave)
         'trace_p_arrival_sample': p_arrival_sample if p_arrival_sample >= 0 else None,
         'trace_p_status': 'manual' if p_arrival_sample >= 0 else None,
         'trace_p_weight': 1.0 if p_arrival_sample >= 0 else None,
         
-        # Phase arrivals - S-wave (trace_ prefix)
+        # Phase arrivals (S-wave)
         'trace_s_arrival_sample': s_arrival_sample if s_arrival_sample >= 0 else None,
         'trace_s_status': 'manual' if s_arrival_sample >= 0 else None,
         'trace_s_weight': 1.0 if s_arrival_sample >= 0 else None,
         
-        # Source information (source_ prefix)
+        # Source information
         'source_id': event_id,
         'source_origin_time': metadata.get('start_time', '1970-01-01T00:00:00'),
         'source_type': 'earthquake',
@@ -208,88 +204,12 @@ def create_seisbench_dataset(
     events: List[Dict],
     output_dir: str = '../data'
 ) -> Path:
-    """
-    Create SeisBench dataset using the official WaveformDataWriter API.
-    
-    This function follows the SeisBench best practices for dataset creation
-    as shown in the reference creating_a_dataset.ipynb example:
-    - Uses WaveformDataWriter as a context manager
-    - Sets proper data_format specifications
-    - Writes traces incrementally with add_trace()
-    - Creates metadata.csv and waveforms.hdf5 in SeisBench format
     
     Args:
-        events: List of event dictionaries from discover_synthetic_data()
-        output_dir: Output directory for dataset files (default: '../data')
-        
-    Returns:
-        Path to the output directory
-        
-    Raises:
-        IOError: If dataset files cannot be created
+        df: Metadata DataFrame
+        hdf5_file: Path to HDF5 file
     """
-    # Setup output paths
-    base_path = Path(output_dir)
-    base_path.mkdir(parents=True, exist_ok=True)
-    
-    metadata_path = base_path / 'metadata.csv'
-    waveforms_path = base_path / 'waveforms.hdf5'
-    
-    print(f"\nCreating SeisBench dataset using WaveformDataWriter")
-    print(f"  Output directory: {base_path}")
-    print(f"  Number of events: {len(events)}")
-    
-    # Use WaveformDataWriter following SeisBench conventions
-    # This is the official API method from seisbench.data
-    with sbd.WaveformDataWriter(metadata_path, waveforms_path) as writer:
-        # Define data format specifications
-        # This tells SeisBench how to interpret the waveform arrays
-        writer.data_format = {
-            'dimension_order': 'CW',  # Channel, Width (samples)
-            'component_order': 'ZNE',  # Vertical, North, East
-            'measurement': 'velocity',
-            'unit': 'counts',
-            'instrument_response': 'not restituted',
-        }
-        
-        # Iterate over events and write traces
-        traces_written = 0
-        traces_failed = 0
-        
-        for i, event in enumerate(events, 1):
-            event_id = event['event_id']
-            
-            try:
-                # Load waveform data
-                data_3c, sampling_rate = load_waveform_data(event)
-                
-                # Build metadata dictionary
-                trace_metadata = build_trace_metadata(event, data_3c, sampling_rate)
-                
-                # Add trace to dataset using SeisBench writer
-                # The writer handles HDF5 writing and metadata collection
-                writer.add_trace(trace_metadata, data_3c)
-                
-                traces_written += 1
-                
-                if i % 10 == 0 or i == len(events):
-                    print(f"  Progress: {i}/{len(events)} events processed ({traces_written} written, {traces_failed} failed)")
-                
-            except Exception as e:
-                traces_failed += 1
-                print(f"  Warning: Failed to process {event_id}: {e}")
-                continue
-    
-    print(f"\n✓ SeisBench dataset created successfully!")
-    print(f"  Total traces written: {traces_written}")
-    print(f"  Failed: {traces_failed}")
-    print(f"  Metadata: {metadata_path}")
-    print(f"  Waveforms: {waveforms_path}")
-    
-    return base_path
-
-
-def print_dataset_summary(dataset_path: Path) -> None:
+    print("\n" + "=" * 70)dataset_path: Path) -> None:
     """
     Load and print summary statistics of the created SeisBench dataset.
     
@@ -340,10 +260,7 @@ def print_dataset_summary(dataset_path: Path) -> None:
         if s_col in df.columns:
             s_count = df[s_col].notna().sum()
             print(f"  S-arrivals: {s_count}/{len(df)}")
-            if s_count > 0:
-                s_samples = df[df[s_col].notna()][s_col]
-                print(f"    Sample range: {s_samples.min():.0f} - {s_samples.max():.0f}")
-        
+            if s_codataset_path: Path        
         # SNR statistics
         if 'trace_snr_db' in df.columns:
             snr_data = df['trace_snr_db']
@@ -361,17 +278,10 @@ def print_dataset_summary(dataset_path: Path) -> None:
                     print(f"  {split_name}: {count} traces")
         
     except Exception as e:
-        print(f"\n  Warning: Could not load metadata for summary: {e}")
-    
-    print("=" * 70)
-
-
-def verify_dataset(dataset_path: Path) -> bool:
-    """
-    Verify integrity of created SeisBench dataset by loading it.
-    
+        print(f"\n  Warning: Could not load metadata for summary: {e}
     Args:
-        dataset_path: Path to the dataset directory
+        hdf5_file: Path to HDF5 file
+        csv_file: Path to CSV file
         
     Returns:
         True if dataset is valid, False otherwise
@@ -379,52 +289,60 @@ def verify_dataset(dataset_path: Path) -> bool:
     print("\nVerifying dataset integrity...")
     
     try:
-        # Try to load the dataset using SeisBench
-        # This is the ultimate test - if SeisBench can load it, it's valid
-        dataset = sbd.WaveformDataset(dataset_path, sampling_rate=100)
-        
-        print(f"  ✓ Dataset loaded successfully with SeisBench")
-        print(f"  ✓ Number of traces: {len(dataset)}")
-        
-        # Check metadata
-        if len(dataset.metadata) == 0:
-            print(f"  ✗ Dataset has no metadata")
+        # Check files exist
+        if not os.path.exists(hdf5_file):
+            print(f"  ✗ HDF5 file not found: {hdf5_file}")
             return False
         
-        print(f"  ✓ Metadata loaded: {len(dataset.metadata)} rows")
+        if not os.path.exists(csv_file):
+            print(f"  ✗ CSV file not found: {csv_file}")
+            return False
         
-        # Try to load first waveform
-        if len(dataset) > 0:
-            waveform = dataset.get_waveforms(0)
-            print(f"  ✓ Waveform shape: {waveform.shape}")
+        # Load CSV
+        df = pd.read_csv(csv_file)
+        print(f"  ✓ CSV loaded: {len(df)} rows")
+        
+        # Check CSV has 3 components per event
+        num_events = len(df) // 3
+        if len(df) % 3 != 0:
+            print(f"  ⚠ Warning: CSV has {len(df)} rows, not divisible by 3 (expected 3 components per event)")
+        
+        # Open HDF5 and check traces
+        with h5py.File(hdf5_file, 'r') as hdf:
+            # Count actual trace datasets (exclude data_format group)
+            trace_keys = [k for k in hdf.keys() if k != 'data_format']
+            num_traces = len(trace_keys)
+            print(f"  ✓ HDF5 loaded: {num_traces} traces (events)")
             
-            if waveform.shape[0] != 3:
-                print(f"  ✗ Invalid waveform shape (expected 3 components)")
+            # Check consistency: CSV should have 3 rows per HDF5 trace (3 components)
+            if len(df) != num_traces * 3:
+                print(f"  ✗ Mismatch: CSV has {len(df)} rows but HDF5 has {num_traces} traces")
+                print(f"     Expected {num_traces * 3} CSV rows (3 per trace)")
                 return False
+            
+            # Check a few traces
+            for trace_name in trace_keys[:3]:
+                data = hdf[trace_name][:]
+                if data.shape[0] != 3:
+                    print(f"  ✗ Invalid shape for {trace_name}: {data.shape}")
+                    return False
+            
+            print(f"  ✓ Trace shapes validated (3, n_samples)")
+            print(f"  ✓ CSV format validated (3 component rows per event)")
         
-        # Check required columns
-        required_cols = ['station_code', 'station_network_code', 'trace_sampling_rate_hz']
-        missing_cols = [col for col in required_cols if col not in dataset.metadata.columns]
+        # Verify required columns exist
+        required_cols = [
+            'network_code', 'receiver_code', 'receiver_type',
+            'p_arrival_sample', 's_arrival_sample',
+            'trace_name', 'trace_category'
+        ]
+        missing_cols = [col for col in required_cols if col not in df.columns]
         if missing_cols:
-            print(f"  ⚠ Warning: Missing recommended columns: {missing_cols}")
-        else:
-            print(f"  ✓ Required columns present")
+            print(f"  ✗ Missing required columns: {missing_cols}")
+            return False
         
-        print("  ✓ Dataset verification passed!")
-        return True
-        
-    except Exception as e:
-        print(f"  ✗ Verification failed: {e}")
-        import traceback
-        traceback.print_exc()
-        return False
-
-
-def main():
-    """Main execution function."""
-    print("=" * 70)
-    print("Packing Synthetic Seismograms into SeisBench Format")
-    print("Using Official WaveformDataWriter API")
+        print(f"  ✓ All required columns present")
+        priUsing Official WaveformDataWriter API")
     print("=" * 70)
     
     # Discover synthetic data
@@ -459,7 +377,19 @@ def main():
         print("  import seisbench.data as sbd")
         print(f"  dataset = sbd.WaveformDataset('{dataset_path}', sampling_rate=100)")
         print(f"  waveform = dataset.get_waveforms(0)")
-        print(f"  metadata = dataset.metadata")
+        print(f"  metadata = dataset.metadata
+    
+    # Verify dataset
+    if verify_dataset(hdf5_file, csv_file):
+        print("\n" + "=" * 70)
+        print("✓ Dataset creation completed successfully!")
+        print("=" * 70)
+        print(f"\nOutput files:")
+        print(f"  - {hdf5_file} (waveform data)")
+        print(f"  - {csv_file} (metadata with picks)")
+        print("\nUsage with SeisBench:")
+        print("  import seisbench.data")
+        print(f"  data = seisbench.data.WaveformDataset('{hdf5_file}', '{csv_file}')")
         return 0
     else:
         print("\n✗ Dataset verification failed!")
