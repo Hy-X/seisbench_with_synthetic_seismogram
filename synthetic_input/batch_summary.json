@@ -1,13 +1,13 @@
 {
-    "generation_timestamp": "2026-02-10T17:16:19.555217",
-    "num_seismograms": 12,
+    "generation_timestamp": "2026-02-10T17:35:45.410806",
+    "num_seismograms": 82,
     "events": [
         {
             "event_id": "SYNTHETIC_001",
-            "p_arrival_time": 56.66332007837262,
-            "s_arrival_time": 72.40466031296823,
-            "noise_level": 0.3228873787338882,
-            "snr_db": 4.909489306822968,
+            "p_arrival_time": 2.5279639900271924,
+            "s_arrival_time": 100.85690149768368,
+            "noise_level": 0.15468420179700126,
+            "snr_db": 8.105540393888152,
             "files": {
                 "mseed": [
                     "SYNTHETIC_001_synthetic_HX_QD_HHZ.mseed",
@@ -20,10 +20,10 @@
         },
         {
             "event_id": "SYNTHETIC_002",
-            "p_arrival_time": 71.03713634619335,
-            "s_arrival_time": 84.79122695727605,
-            "noise_level": 0.3621674365301649,
-            "snr_db": 4.410906008773471,
+            "p_arrival_time": 93.56837306650554,
+            "s_arrival_time": 94.82936298729274,
+            "noise_level": 0.3458467775802977,
+            "snr_db": 4.611162664956801,
             "files": {
                 "mseed": [
                     "SYNTHETIC_002_synthetic_HX_QD_HHZ.mseed",
@@ -36,10 +36,10 @@
         },
         {
             "event_id": "SYNTHETIC_003",
-            "p_arrival_time": 98.10044443205503,
-            "s_arrival_time": 107.07172170012731,
-            "noise_level": 0.26232261342277563,
-            "snr_db": 5.811642696025042,
+            "p_arrival_time": 107.01609442924007,
+            "s_arrival_time": 111.56913931734555,
+            "noise_level": 0.2863859614916003,
+            "snr_db": 5.430482747586025,
             "files": {
                 "mseed": [
                     "SYNTHETIC_003_synthetic_HX_QD_HHZ.mseed",
@@ -52,10 +52,10 @@
         },
         {
             "event_id": "SYNTHETIC_004",
-            "p_arrival_time": 30.612631142743414,
-            "s_arrival_time": 71.16355554993596,
-            "noise_level": 0.23769281830618474,
-            "snr_db": 6.239839399256387,
+            "p_arrival_time": 72.01198173450392,
+            "s_arrival_time": 90.75397198804197,
+            "noise_level": 0.37897243147785453,
+            "snr_db": 4.213923818327639,
             "files": {
                 "mseed": [
                     "SYNTHETIC_004_synthetic_HX_QD_HHZ.mseed",
@@ -68,10 +68,10 @@
         },
         {
             "event_id": "SYNTHETIC_005",
-            "p_arrival_time": 76.04746815355281,
-            "s_arrival_time": 108.14608051136337,
-            "noise_level": 0.2507548663275946,
-            "snr_db": 6.0075062999761775,
+            "p_arrival_time": 74.0274776940828,
+            "s_arrival_time": 106.19864203367368,
+            "noise_level": 0.37758259154411844,
+            "snr_db": 4.2298803707156205,
             "files": {
                 "mseed": [
                     "SYNTHETIC_005_synthetic_HX_QD_HHZ.mseed",
@@ -84,10 +84,10 @@
         },
         {
             "event_id": "SYNTHETIC_006",
-            "p_arrival_time": 103.3734490512044,
-            "s_arrival_time": 107.38313768692474,
-            "noise_level": 0.23077572960122,
-            "snr_db": 6.368098673296078,
+            "p_arrival_time": 27.77451378350544,
+            "s_arrival_time": 61.08356818272344,
+            "noise_level": 0.12054555976705611,
+            "snr_db": 9.188487820030824,
             "files": {
                 "mseed": [
                     "SYNTHETIC_006_synthetic_HX_QD_HHZ.mseed",
@@ -100,10 +100,10 @@
         },
         {
             "event_id": "SYNTHETIC_007",
-            "p_arrival_time": 36.104305602960885,
-            "s_arrival_time": 39.68973611199429,
-            "noise_level": 0.10135211096320716,
-            "snr_db": 9.941672013851319,
+            "p_arrival_time": 26.5337270058008,
+            "s_arrival_time": 84.7610938518988,
+            "noise_level": 0.1247196048561182,
+            "snr_db": 9.040652737739876,
             "files": {
                 "mseed": [
                     "SYNTHETIC_007_synthetic_HX_QD_HHZ.mseed",
@@ -116,10 +116,10 @@
         },
         {
             "event_id": "SYNTHETIC_008",
-            "p_arrival_time": 58.27825117841098,
-            "s_arrival_time": 79.54195306004105,
-            "noise_level": 0.26320685906441416,
-            "snr_db": 5.797027973718668,
+            "p_arrival_time": 34.01557687201898,
+            "s_arrival_time": 107.73278014620473,
+            "noise_level": 0.2621040941382372,
+            "snr_db": 5.815261952008334,
             "files": {
                 "mseed": [
                     "SYNTHETIC_008_synthetic_HX_QD_HHZ.mseed",
@@ -132,10 +132,10 @@
         },
         {
             "event_id": "SYNTHETIC_009",
-            "p_arrival_time": 38.49980922671984,
-            "s_arrival_time": 84.22205797062163,
-            "noise_level": 0.34722360866738283,
-            "snr_db": 4.5939075364130275,
+            "p_arrival_time": 63.9461231808596,
+            "s_arrival_time": 96.04822273514954,
+            "noise_level": 0.34360715451358137,
+            "snr_db": 4.639378019612246,
             "files": {
                 "mseed": [
                     "SYNTHETIC_009_synthetic_HX_QD_HHZ.mseed",
@@ -148,10 +148,10 @@
         },
         {
             "event_id": "SYNTHETIC_010",
-            "p_arrival_time": 61.86378311314748,
-            "s_arrival_time": 67.45428125922795,
-            "noise_level": 0.2959869251523617,
-            "snr_db": 5.287274729261824,
+            "p_arrival_time": 5.301633538782534,
+            "s_arrival_time": 13.860502197770128,
+            "noise_level": 0.37778776788492774,
+            "snr_db": 4.227521078913667,
             "files": {
                 "mseed": [
                     "SYNTHETIC_010_synthetic_HX_QD_HHZ.mseed",
@@ -164,10 +164,10 @@
         },
         {
             "event_id": "SYNTHETIC_011",
-            "p_arrival_time": 79.97475701238085,
-            "s_arrival_time": 82.4363015009775,
-            "noise_level": 0.16128935232552447,
-            "snr_db": 7.9239430204007055,
+            "p_arrival_time": 67.38025052059582,
+            "s_arrival_time": 97.50106436632342,
+            "noise_level": 0.12326475412074886,
+            "snr_db": 9.09161086251691,
             "files": {
                 "mseed": [
                     "SYNTHETIC_011_synthetic_HX_QD_HHZ.mseed",
@@ -180,10 +180,10 @@
         },
         {
             "event_id": "SYNTHETIC_012",
-            "p_arrival_time": 4.104155492401254,
-            "s_arrival_time": 110.18198773194979,
-            "noise_level": 0.15285904339787118,
-            "snr_db": 8.157088625864882,
+            "p_arrival_time": 84.16386477338617,
+            "s_arrival_time": 86.97194727254636,
+            "noise_level": 0.3291533113025686,
+            "snr_db": 4.826017715207104,
             "files": {
                 "mseed": [
                     "SYNTHETIC_012_synthetic_HX_QD_HHZ.mseed",
@@ -192,6 +192,1126 @@
                 ],
                 "npy": "SYNTHETIC_012_synthetic_HX_QD_3C.npy",
                 "metadata": "SYNTHETIC_012_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_013",
+            "p_arrival_time": 78.50212229437015,
+            "s_arrival_time": 99.4292140245771,
+            "noise_level": 0.22901613758054812,
+            "snr_db": 6.401339141000574,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_013_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_013_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_013_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_013_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_013_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_014",
+            "p_arrival_time": 79.90985377004428,
+            "s_arrival_time": 88.47715052643319,
+            "noise_level": 0.3000713488856972,
+            "snr_db": 5.227754694697133,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_014_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_014_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_014_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_014_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_014_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_015",
+            "p_arrival_time": 92.91907247982948,
+            "s_arrival_time": 104.80332898656751,
+            "noise_level": 0.23941798651198756,
+            "snr_db": 6.208432259033911,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_015_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_015_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_015_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_015_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_015_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_016",
+            "p_arrival_time": 28.262510091264293,
+            "s_arrival_time": 34.365777290837286,
+            "noise_level": 0.26342397688613295,
+            "snr_db": 5.793446980324404,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_016_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_016_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_016_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_016_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_016_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_017",
+            "p_arrival_time": 63.51226719499539,
+            "s_arrival_time": 69.75437086167757,
+            "noise_level": 0.14082931585443265,
+            "snr_db": 8.513069305023839,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_017_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_017_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_017_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_017_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_017_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_018",
+            "p_arrival_time": 97.17162936046098,
+            "s_arrival_time": 105.04349017507114,
+            "noise_level": 0.34611977924748605,
+            "snr_db": 4.607735819465729,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_018_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_018_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_018_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_018_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_018_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_019",
+            "p_arrival_time": 22.067800382158147,
+            "s_arrival_time": 28.887932670113532,
+            "noise_level": 0.1996122398103004,
+            "snr_db": 6.998128321914515,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_019_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_019_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_019_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_019_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_019_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_020",
+            "p_arrival_time": 54.59481980078299,
+            "s_arrival_time": 58.776120566957516,
+            "noise_level": 0.19773684280887857,
+            "snr_db": 7.039124043440759,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_020_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_020_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_020_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_020_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_020_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_021",
+            "p_arrival_time": 70.74851889317624,
+            "s_arrival_time": 75.61700978581018,
+            "noise_level": 0.2245806963995608,
+            "snr_db": 6.4862757580134875,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_021_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_021_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_021_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_021_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_021_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_022",
+            "p_arrival_time": 80.7715371513843,
+            "s_arrival_time": 92.41425263974396,
+            "noise_level": 0.12745789251919531,
+            "snr_db": 8.946332667352602,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_022_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_022_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_022_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_022_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_022_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_023",
+            "p_arrival_time": 5.613422523755712,
+            "s_arrival_time": 43.33539543216875,
+            "noise_level": 0.16495094998738025,
+            "snr_db": 7.8264517891773355,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_023_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_023_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_023_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_023_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_023_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_024",
+            "p_arrival_time": 73.6954587227229,
+            "s_arrival_time": 100.76797052574716,
+            "noise_level": 0.3001051315551266,
+            "snr_db": 5.227265784271258,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_024_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_024_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_024_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_024_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_024_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_025",
+            "p_arrival_time": 67.60232307630001,
+            "s_arrival_time": 106.76104395167938,
+            "noise_level": 0.19032875273472005,
+            "snr_db": 7.204955984141281,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_025_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_025_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_025_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_025_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_025_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_026",
+            "p_arrival_time": 36.32812330913658,
+            "s_arrival_time": 49.501068501980264,
+            "noise_level": 0.20190439459536683,
+            "snr_db": 6.948542282195732,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_026_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_026_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_026_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_026_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_026_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_027",
+            "p_arrival_time": 80.07248695782447,
+            "s_arrival_time": 84.26832655071418,
+            "noise_level": 0.264916963227274,
+            "snr_db": 5.768902319627486,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_027_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_027_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_027_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_027_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_027_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_028",
+            "p_arrival_time": 73.89910037989586,
+            "s_arrival_time": 99.22272405796981,
+            "noise_level": 0.23496753576562174,
+            "snr_db": 6.289921377784763,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_028_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_028_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_028_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_028_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_028_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_029",
+            "p_arrival_time": 6.064541251220074,
+            "s_arrival_time": 59.183793722889206,
+            "noise_level": 0.3602919241058584,
+            "snr_db": 4.433454724196737,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_029_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_029_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_029_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_029_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_029_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_030",
+            "p_arrival_time": 23.972538004257263,
+            "s_arrival_time": 108.07220888155797,
+            "noise_level": 0.13292898413811363,
+            "snr_db": 8.763803141752089,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_030_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_030_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_030_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_030_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_030_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_031",
+            "p_arrival_time": 30.03133429798405,
+            "s_arrival_time": 46.33196081151678,
+            "noise_level": 0.2760504500097276,
+            "snr_db": 5.590115405485406,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_031_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_031_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_031_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_031_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_031_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_032",
+            "p_arrival_time": 27.90421520959634,
+            "s_arrival_time": 83.26067139517988,
+            "noise_level": 0.16312514654657095,
+            "snr_db": 7.874790851607793,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_032_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_032_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_032_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_032_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_032_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_033",
+            "p_arrival_time": 102.02899381358561,
+            "s_arrival_time": 111.28333262023538,
+            "noise_level": 0.1592635414926437,
+            "snr_db": 7.978836312343265,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_033_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_033_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_033_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_033_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_033_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_034",
+            "p_arrival_time": 35.12842192020399,
+            "s_arrival_time": 86.61875229252243,
+            "noise_level": 0.2942408399122728,
+            "snr_db": 5.3129704840798,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_034_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_034_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_034_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_034_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_034_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_035",
+            "p_arrival_time": 107.03865043182665,
+            "s_arrival_time": 108.39816512041295,
+            "noise_level": 0.2639420976710041,
+            "snr_db": 5.784913360848908,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_035_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_035_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_035_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_035_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_035_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_036",
+            "p_arrival_time": 73.48374485016906,
+            "s_arrival_time": 90.92452216240206,
+            "noise_level": 0.2981444029006874,
+            "snr_db": 5.255733393021854,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_036_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_036_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_036_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_036_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_036_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_037",
+            "p_arrival_time": 81.8061688565701,
+            "s_arrival_time": 110.34616391034156,
+            "noise_level": 0.32251823318095724,
+            "snr_db": 4.914457280177379,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_037_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_037_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_037_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_037_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_037_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_038",
+            "p_arrival_time": 104.23639660003066,
+            "s_arrival_time": 110.50576836643505,
+            "noise_level": 0.2794195484594724,
+            "snr_db": 5.537432135006672,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_038_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_038_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_038_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_038_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_038_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_039",
+            "p_arrival_time": 77.82213795165569,
+            "s_arrival_time": 109.13088187330277,
+            "noise_level": 0.3073599669257372,
+            "snr_db": 5.123526992157581,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_039_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_039_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_039_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_039_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_039_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_040",
+            "p_arrival_time": 100.82886555384341,
+            "s_arrival_time": 103.66875688486493,
+            "noise_level": 0.1148271234961369,
+            "snr_db": 9.399555144349488,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_040_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_040_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_040_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_040_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_040_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_041",
+            "p_arrival_time": 18.42614162573951,
+            "s_arrival_time": 100.12916749134206,
+            "noise_level": 0.14397078234229505,
+            "snr_db": 8.417256353700143,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_041_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_041_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_041_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_041_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_041_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_042",
+            "p_arrival_time": 76.98685072481535,
+            "s_arrival_time": 111.70698351961461,
+            "noise_level": 0.32491734900336877,
+            "snr_db": 4.882270988265433,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_042_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_042_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_042_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_042_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_042_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_043",
+            "p_arrival_time": 88.56659859259172,
+            "s_arrival_time": 90.72137362236332,
+            "noise_level": 0.13947575954357322,
+            "snr_db": 8.555012648723562,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_043_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_043_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_043_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_043_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_043_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_044",
+            "p_arrival_time": 98.26911019283772,
+            "s_arrival_time": 104.71767532609422,
+            "noise_level": 0.23020260045339389,
+            "snr_db": 6.378897747280318,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_044_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_044_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_044_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_044_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_044_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_045",
+            "p_arrival_time": 16.744684653257433,
+            "s_arrival_time": 81.67145161667028,
+            "noise_level": 0.18716866307802435,
+            "snr_db": 7.27766861749191,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_045_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_045_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_045_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_045_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_045_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_046",
+            "p_arrival_time": 100.45334371266573,
+            "s_arrival_time": 102.16484287686484,
+            "noise_level": 0.21047276976883864,
+            "snr_db": 6.768040836957745,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_046_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_046_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_046_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_046_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_046_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_047",
+            "p_arrival_time": 46.38117749903896,
+            "s_arrival_time": 97.13237090220785,
+            "noise_level": 0.22389655361664895,
+            "snr_db": 6.499525913552767,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_047_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_047_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_047_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_047_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_047_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_048",
+            "p_arrival_time": 71.65685546232135,
+            "s_arrival_time": 89.14636837830739,
+            "noise_level": 0.36799830343107665,
+            "snr_db": 4.341541835336019,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_048_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_048_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_048_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_048_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_048_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_049",
+            "p_arrival_time": 59.76053039252062,
+            "s_arrival_time": 71.04422176068705,
+            "noise_level": 0.3912716650410838,
+            "snr_db": 4.075216015290842,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_049_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_049_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_049_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_049_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_049_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_050",
+            "p_arrival_time": 80.71346789764334,
+            "s_arrival_time": 111.5889006168729,
+            "noise_level": 0.1355876844163114,
+            "snr_db": 8.677797561395991,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_050_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_050_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_050_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_050_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_050_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_051",
+            "p_arrival_time": 81.60727794189117,
+            "s_arrival_time": 96.35494135405544,
+            "noise_level": 0.13888490609771725,
+            "snr_db": 8.573449504802808,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_051_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_051_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_051_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_051_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_051_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_052",
+            "p_arrival_time": 68.69746199592731,
+            "s_arrival_time": 79.8436432040154,
+            "noise_level": 0.28357338828191275,
+            "snr_db": 5.473345275954454,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_052_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_052_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_052_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_052_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_052_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_053",
+            "p_arrival_time": 19.44901285786723,
+            "s_arrival_time": 108.29150446014425,
+            "noise_level": 0.3589676670705393,
+            "snr_db": 4.449446674250947,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_053_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_053_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_053_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_053_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_053_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_054",
+            "p_arrival_time": 32.72030231225838,
+            "s_arrival_time": 60.866598903486334,
+            "noise_level": 0.3173391458376412,
+            "snr_db": 4.984763515596783,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_054_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_054_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_054_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_054_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_054_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_055",
+            "p_arrival_time": 75.99695358560966,
+            "s_arrival_time": 105.96317025800828,
+            "noise_level": 0.13752959606018433,
+            "snr_db": 8.616038325790793,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_055_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_055_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_055_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_055_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_055_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_056",
+            "p_arrival_time": 110.68074500994324,
+            "s_arrival_time": 111.80203865602142,
+            "noise_level": 0.2435943732040978,
+            "snr_db": 6.133327477084328,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_056_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_056_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_056_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_056_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_056_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_057",
+            "p_arrival_time": 64.00383840656461,
+            "s_arrival_time": 85.15642805923605,
+            "noise_level": 0.13038571780615923,
+            "snr_db": 8.847699777580607,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_057_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_057_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_057_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_057_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_057_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_058",
+            "p_arrival_time": 23.409772566152608,
+            "s_arrival_time": 86.69227640566417,
+            "noise_level": 0.2129138124181133,
+            "snr_db": 6.71796163538719,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_058_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_058_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_058_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_058_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_058_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_059",
+            "p_arrival_time": 105.92525971919683,
+            "s_arrival_time": 107.01925228613477,
+            "noise_level": 0.35876790176278694,
+            "snr_db": 4.451864193371917,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_059_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_059_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_059_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_059_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_059_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_060",
+            "p_arrival_time": 21.485599362398972,
+            "s_arrival_time": 83.99337654670569,
+            "noise_level": 0.16679789056985553,
+            "snr_db": 7.7780944602240805,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_060_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_060_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_060_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_060_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_060_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_061",
+            "p_arrival_time": 84.35451862769398,
+            "s_arrival_time": 106.84223736515287,
+            "noise_level": 0.38233860904904204,
+            "snr_db": 4.175518441459991,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_061_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_061_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_061_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_061_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_061_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_062",
+            "p_arrival_time": 68.43821163380169,
+            "s_arrival_time": 95.33148413821667,
+            "noise_level": 0.3885805802076342,
+            "snr_db": 4.105189075947235,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_062_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_062_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_062_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_062_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_062_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_063",
+            "p_arrival_time": 40.73792195916933,
+            "s_arrival_time": 86.62926569821806,
+            "noise_level": 0.2398088142251767,
+            "snr_db": 6.201348583555743,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_063_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_063_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_063_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_063_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_063_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_064",
+            "p_arrival_time": 5.779846045463657,
+            "s_arrival_time": 82.752365728232,
+            "noise_level": 0.28584468953874986,
+            "snr_db": 5.4386987175630495,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_064_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_064_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_064_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_064_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_064_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_065",
+            "p_arrival_time": 104.45621823835687,
+            "s_arrival_time": 106.6751109041219,
+            "noise_level": 0.27139362825309404,
+            "snr_db": 5.664003528701111,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_065_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_065_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_065_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_065_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_065_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_066",
+            "p_arrival_time": 109.78763508125465,
+            "s_arrival_time": 111.43351657452364,
+            "noise_level": 0.38614915248716075,
+            "snr_db": 4.132449140058592,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_066_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_066_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_066_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_066_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_066_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_067",
+            "p_arrival_time": 71.07065694650198,
+            "s_arrival_time": 107.60820258139117,
+            "noise_level": 0.11434880841999473,
+            "snr_db": 9.417683566306243,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_067_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_067_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_067_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_067_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_067_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_068",
+            "p_arrival_time": 99.86423671107862,
+            "s_arrival_time": 108.39245469359577,
+            "noise_level": 0.37353376879481337,
+            "snr_db": 4.276701302921795,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_068_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_068_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_068_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_068_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_068_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_069",
+            "p_arrival_time": 17.472017065266396,
+            "s_arrival_time": 59.816980630345,
+            "noise_level": 0.3112020254096937,
+            "snr_db": 5.069575851354621,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_069_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_069_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_069_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_069_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_069_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_070",
+            "p_arrival_time": 68.73374543916374,
+            "s_arrival_time": 96.7920715896823,
+            "noise_level": 0.22067123721588347,
+            "snr_db": 6.562542700666045,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_070_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_070_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_070_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_070_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_070_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_071",
+            "p_arrival_time": 73.2331682971888,
+            "s_arrival_time": 80.65004908840504,
+            "noise_level": 0.3169980227644025,
+            "snr_db": 4.9894344663142025,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_071_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_071_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_071_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_071_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_071_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_072",
+            "p_arrival_time": 71.39197722901488,
+            "s_arrival_time": 110.27113479771285,
+            "noise_level": 0.36293989624786327,
+            "snr_db": 4.401652892589668,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_072_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_072_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_072_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_072_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_072_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_073",
+            "p_arrival_time": 72.00104295283721,
+            "s_arrival_time": 101.80583853316651,
+            "noise_level": 0.1797334832008835,
+            "snr_db": 7.4537100906356235,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_073_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_073_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_073_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_073_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_073_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_074",
+            "p_arrival_time": 62.621629113469794,
+            "s_arrival_time": 80.15984557378192,
+            "noise_level": 0.2651980965614544,
+            "snr_db": 5.764295973706718,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_074_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_074_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_074_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_074_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_074_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_075",
+            "p_arrival_time": 23.891570193168075,
+            "s_arrival_time": 85.61855478739407,
+            "noise_level": 0.19464908016203214,
+            "snr_db": 7.107476442525112,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_075_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_075_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_075_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_075_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_075_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_076",
+            "p_arrival_time": 87.4628274893675,
+            "s_arrival_time": 107.60301131986225,
+            "noise_level": 0.37999275904401997,
+            "snr_db": 4.202246790073679,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_076_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_076_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_076_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_076_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_076_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_077",
+            "p_arrival_time": 85.62085063622825,
+            "s_arrival_time": 106.75782883434847,
+            "noise_level": 0.1886542740571458,
+            "snr_db": 7.243333511923415,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_077_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_077_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_077_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_077_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_077_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_078",
+            "p_arrival_time": 66.74485951719547,
+            "s_arrival_time": 70.06281933545932,
+            "noise_level": 0.20870906761182165,
+            "snr_db": 6.8045868208820615,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_078_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_078_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_078_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_078_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_078_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_079",
+            "p_arrival_time": 21.75325114716968,
+            "s_arrival_time": 77.12710593210024,
+            "noise_level": 0.10393023040714561,
+            "snr_db": 9.83258109907611,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_079_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_079_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_079_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_079_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_079_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_080",
+            "p_arrival_time": 6.736278409616826,
+            "s_arrival_time": 58.357982253491826,
+            "noise_level": 0.3906090599693217,
+            "snr_db": 4.0825768770190045,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_080_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_080_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_080_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_080_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_080_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_081",
+            "p_arrival_time": 19.21111861562133,
+            "s_arrival_time": 47.24494055001931,
+            "noise_level": 0.22538405253989613,
+            "snr_db": 6.47076816501735,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_081_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_081_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_081_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_081_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_081_synthetic_HX_QD_metadata.json"
+            }
+        },
+        {
+            "event_id": "SYNTHETIC_082",
+            "p_arrival_time": 82.99066120258861,
+            "s_arrival_time": 87.86711914478543,
+            "noise_level": 0.3131942299768635,
+            "snr_db": 5.04186247611194,
+            "files": {
+                "mseed": [
+                    "SYNTHETIC_082_synthetic_HX_QD_HHZ.mseed",
+                    "SYNTHETIC_082_synthetic_HX_QD_HHN.mseed",
+                    "SYNTHETIC_082_synthetic_HX_QD_HHE.mseed"
+                ],
+                "npy": "SYNTHETIC_082_synthetic_HX_QD_3C.npy",
+                "metadata": "SYNTHETIC_082_synthetic_HX_QD_metadata.json"
             }
         }
     ]
