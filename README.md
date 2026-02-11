@@ -1,10 +1,10 @@
-# Xiao Net v2
+# SeisBench with Synthetic Seismogram
 
-Deep learning framework for seismic phase picking using PyTorch and SeisBench.
+Deep learning framework for seismic phase picking using PyTorch, SeisBench, and synthetic training data.
 
 ## Overview
 
-Xiao Net v2 is a neural network-based system for detecting and picking seismic phase arrivals (P and S waves) from three-component seismograms. The project includes tools for:
+This project provides a complete pipeline for generating synthetic seismic training data and building neural network-based systems for detecting and picking seismic phase arrivals (P and S waves) from three-component seismograms. The project includes tools for:
 
 - **Synthetic data generation**: Create realistic 3-component synthetic seismograms for training
 - **Data preprocessing**: Convert data to SeisBench format for standardized workflows
@@ -14,20 +14,26 @@ Xiao Net v2 is a neural network-based system for detecting and picking seismic p
 ## Project Structure
 
 ```
-xiao_net_ver_2/
+seisbench_with_synthetic_seismogram/
 ├── synthetic_input/     # Synthetic seismogram generation pipeline
 │   ├── README.md        # Detailed documentation for synthetic data
 │   ├── Syn_Config.json  # Configuration file for generation parameters
 │   ├── P001_generate_synthetic_3c_seismogram.py  # Single seismogram generator
 │   ├── P002_batch_generate_synthetic_3c.py       # Batch generation script
 │   ├── P003_pack_to_seisbench.py                 # Convert to SeisBench format
-│   └── T001_test_seisbench_dataset.py            # Verify dataset integrity
+│   ├── T001_test_seisbench_dataset.py            # Verify dataset integrity
+│   ├── V001_demo_synthetic_dataset.ipynb         # Demo notebook for visualization
+│   ├── V002_plot_noise_comparison.py             # Noise analysis visualization
+│   ├── batch_summary.json                        # Generation log and metrics
+│   └── REF_creating_a_dataset.ipynb              # Reference notebook
 ├── data/                # Generated datasets
 │   ├── metadata.csv     # Trace metadata with phase picks
 │   └── waveforms.hdf5   # 3-component waveform data
 ├── model/               # Model architectures and experiments
-├── training/            # Training scripts and configurations
-└── output/              # Model outputs and results
+│   └── REF_dataset_basics.ipynb                  # SeisBench dataset basics
+├── output/              # Model outputs and results
+└── .github/             # GitHub configurations
+    └── agents/          # GitHub Copilot agent configurations
 ```
 
 ## Quick Start
@@ -45,6 +51,9 @@ python P003_pack_to_seisbench.py
 
 # Verify the dataset
 python T001_test_seisbench_dataset.py
+
+# Visualize the generated data
+jupyter notebook V001_demo_synthetic_dataset.ipynb
 ```
 
 ### 2. Configure Generation Parameters
@@ -62,11 +71,14 @@ Edit `synthetic_input/Syn_Config.json` to customize:
 }
 ```
 
-### 3. Train Model
+### 3. Explore Dataset
 
 ```bash
-cd training
-# Training scripts will be added here
+# Open dataset basics notebook
+jupyter notebook model/REF_dataset_basics.ipynb
+
+# Compare noise characteristics
+python synthetic_input/V002_plot_noise_comparison.py
 ```
 
 ## Requirements
@@ -106,27 +118,34 @@ The project uses **SeisBench format** for data storage:
 
 - **Realistic waveforms**: Simulates P and S wave arrivals with proper polarization
 - **3-component synthesis**: Vertical, North, and East components
-- **Noise modeling**: Configurable realistic seismic noise
-- **Batch processing**: Generate large training datasets efficiently
+- **Noise modeling**: Configurable realistic seismic noise with SNR tracking
+- **Batch processing**: Generate large training datasets efficiently (72 traces generated as of Feb 2026)
 - **SeisBench integration**: Direct compatibility with SeisBench models
+- **Generation tracking**: Automatic logging via `batch_summary.json`
 
 ### Data Processing
 
-- **Automated packing**: Convert synthetic data to standard format
-- **Metadata extraction**: Automatic phase pick labeling
+- **Automated packing**: Convert synthetic data to SeisBench format with configurable train/dev/test splits
+- **Metadata extraction**: Automatic phase pick labeling with sample indices
 - **Quality control**: Validation scripts to verify dataset integrity
+- **Visualization tools**: Interactive notebooks and plotting scripts for data inspection
+- **Noise analysis**: Tools to compare and analyze noise characteristics across traces
 
 ## Development Status
 
-- ✅ Synthetic data generation pipeline
-- ✅ SeisBench format conversion
+- ✅ Synthetic data generation pipeline (72 seismograms generated)
+- ✅ SeisBench format conversion with data splits
 - ✅ Dataset testing and validation
-- 🚧 Model training pipeline (in progress)
-- 🚧 Evaluation and benchmarking (in progress)
+- ✅ Visualization and analysis tools
+- ✅ Generation tracking and metadata logging
+- 🚧 Model training pipeline (planned)
+- 🚧 Evaluation and benchmarking (planned)
 
 ## Documentation
 
 - [Synthetic Data Generation](synthetic_input/README.md) - Comprehensive guide for creating synthetic seismograms
+- [V001_demo_synthetic_dataset.ipynb](synthetic_input/V001_demo_synthetic_dataset.ipynb) - Interactive demo of synthetic dataset
+- [REF_dataset_basics.ipynb](model/REF_dataset_basics.ipynb) - SeisBench dataset fundamentals
 - [SeisBench Documentation](https://seisbench.readthedocs.io/) - Official SeisBench docs
 
 ## Contributing
@@ -144,11 +163,11 @@ When adding new features:
 If you use this code in your research, please cite:
 
 ```bibtex
-@software{xiao_net_v2,
+@software{seisbench_synthetic,
   author = {Hongyu Xiao},
-  title = {Xiao Net v2: Deep Learning for Seismic Phase Picking},
+  title = {SeisBench with Synthetic Seismogram: Synthetic Data Generation for Seismic Phase Picking},
   year = {2026},
-  url = {https://github.com/Hy-X/xiao_net_ver_2}
+  url = {https://github.com/Hy-X/seisbench_with_synthetic_seismogram}
 }
 ```
 
