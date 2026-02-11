@@ -168,7 +168,7 @@ def discover_synthetic_data() -> List[Dict]:
     return events
 
 
-def load_waveform_data(event: Dict, use_mseed: bool = True) -> Tuple[np.ndarray, float, str]:
+def load_waveform_data(event: Dict, use_mseed: bool = True) -> Tuple[np.ndarray, float, Dict[str, str]]:
     """
     Load 3-component waveform data from MSEED or NPY files.
     
@@ -179,12 +179,13 @@ def load_waveform_data(event: Dict, use_mseed: bool = True) -> Tuple[np.ndarray,
     Returns:
         data_3c: Waveform array of shape (3, n_samples) for Z, N, E
         sampling_rate: Sampling rate in Hz
-        channel_code: Channel band and instrument code (e.g., 'HH' from 'HHZ')
+        channel_codes: Dictionary with keys 'Z', 'N', 'E' containing full channel codes
+                      (e.g., {'Z': 'HHZ', 'N': 'HHN', 'E': 'HHE'})
         
     Raises:
         ValueError: If waveform data cannot be loaded
     """
-    channel_code = 'HH'  # Default fallback
+    channel_codes = {'Z': 'HHZ', 'N': 'HHN', 'E': 'HHE'}  # Default fallback
     
     if use_mseed and all(os.path.exists(f) for f in event['mseed_files'].values()):
         # Load from MSEED files
@@ -197,10 +198,8 @@ def load_waveform_data(event: Dict, use_mseed: bool = True) -> Tuple[np.ndarray,
             data_list.append(tr.data)
             sampling_rate = tr.stats.sampling_rate
             
-            # Extract channel code from Z component (band + instrument code)
-            if ch == 'Z':
-                full_channel = tr.stats.channel  # e.g., 'HHZ'
-                channel_code = full_channel[:2] if len(full_channel) >= 2 else 'HH'
+            # Extract full channel code from MSEED header (e.g., 'HHZ', 'HHN', 'HHE')
+            channel_codes[ch] = tr.stats.channel
         
         data_3c = np.vstack(data_list)
         
@@ -209,7 +208,12 @@ def load_waveform_data(event: Dict, use_mseed: bool = True) -> Tuple[np.ndarray,
         data_3c = np.load(event['npy_file'])
         sampling_rate = event['metadata'].get('sample_rate', 100.0)
         # Try to get channel code from metadata, otherwise use default
-        channel_code = event['metadata'].get('channel_code', 'HH')
+        channel_base = event['metadata'].get('channel_code', 'HH')
+        channel_codes = {
+            'Z': f'{channel_base}Z',
+            'N': f'{channel_base}N',
+            'E': f'{channel_base}E'
+        }
     
     # Validate shape
     if data_3c.shape[0] != 3:
@@ -218,14 +222,14 @@ def load_waveform_data(event: Dict, use_mseed: bool = True) -> Tuple[np.ndarray,
             f"Expected (3, n_samples)."
         )
     
-    return data_3c, sampling_rate, channel_code
+    return data_3c, sampling_rate, channel_codes
 
 
 def build_trace_metadata(
     event: Dict,
     data_3c: np.ndarray,
     sampling_rate: float,
-    channel_code: str,
+    channel_codes: Dict[str, str],
     split: str = 'train'
 ) -> Dict:
     """
@@ -234,11 +238,15 @@ def build_trace_metadata(
     Following the pattern from SeisBench reference example, metadata uses
     prefixes like 'station_', 'trace_', 'source_' for different property types.
     
+    Constructs trace name in format:
+        {network}.{station}.{channel_E}.{channel_N}.{channel_Z}.{start_time}{end_time}
+    Example: "2V.TG11.EHE.EHN.EHZ.2023-08-18T1821082023-08-18T182108"
+    
     Args:
         event: Event dictionary from discover_synthetic_data()
         data_3c: Waveform array of shape (3, n_samples)
         sampling_rate: Sampling rate in Hz
-        channel_code: Channel band and instrument code (e.g., 'HH')
+        channel_codes: Dictionary with keys 'Z', 'N', 'E' containing full channel codes
         split: Dataset split assignment ('train', 'dev', or 'test')
         
     Returns:
@@ -257,8 +265,41 @@ def build_trace_metadata(
     p_arrival_sample = metadata.get('p_arrival_sample', -1)
     s_arrival_sample = metadata.get('s_arrival_sample', -1)
     
+    # Time information
+    start_time_str = metadata.get('start_time', '1970-01-01T00:00:00')
+    
+    # Calculate end time based on trace length and sampling rate
+    trace_duration_sec = data_3c.shape[1] / sampling_rate
+    try:
+        from datetime import datetime, timedelta
+        start_time = datetime.fromisoformat(start_time_str.replace('Z', '+00:00'))
+        end_time = start_time + timedelta(seconds=trace_duration_sec)
+        
+        # Format timestamps for trace name (remove colons, hyphens from time part)
+        # Format: YYYY-MM-DDTHHMMSS
+        start_time_fmt = start_time.strftime('%Y-%m-%dT%H%M%S')
+        end_time_fmt = end_time.strftime('%Y-%m-%dT%H%M%S')
+    except (ValueError, AttributeError):
+        # Fallback if datetime parsing fails
+        start_time_fmt = start_time_str.replace(':', '').replace('-', '', 2)  # Remove colons, first 2 hyphens only
+        end_time_fmt = start_time_fmt
+    
+    # Construct trace name following SeisBench format
+    # Format: {network}.{station}.{channel_E}.{channel_N}.{channel_Z}.{start_time}{end_time}
+    trace_name = (
+        f"{network_code}.{station_code}."
+        f"{channel_codes['E']}.{channel_codes['N']}.{channel_codes['Z']}."
+        f"{start_time_fmt}{end_time_fmt}"
+    )
+    
+    # Extract band + instrument code for trace_channel field (e.g., 'HH' from 'HHZ')
+    channel_code = channel_codes['Z'][:2] if len(channel_codes['Z']) >= 2 else 'HH'
+    
     # Build metadata dictionary with SeisBench conventions
     trace_metadata = {
+        # Trace identifier
+        'trace_name': trace_name,
+        
         # Station information (station_ prefix)
         'station_network_code': network_code,
         'station_code': station_code,
@@ -269,7 +310,7 @@ def build_trace_metadata(
         'trace_channel': channel_code,  # Band + instrument code from MSEED header
         'trace_sampling_rate_hz': sampling_rate,
         'trace_npts': data_3c.shape[1],
-        'trace_start_time': metadata.get('start_time', '1970-01-01T00:00:00'),
+        'trace_start_time': start_time_str,
         
         # Phase arrivals - P-wave (trace_ prefix)
         'trace_p_arrival_sample': p_arrival_sample if p_arrival_sample >= 0 else None,
@@ -370,14 +411,14 @@ def create_seisbench_dataset(
             event_id = event['event_id']
             
             try:
-                # Load waveform data and extract channel code from MSEED header
-                data_3c, sampling_rate, channel_code = load_waveform_data(event)
+                # Load waveform data and extract channel codes from MSEED headers
+                data_3c, sampling_rate, channel_codes = load_waveform_data(event)
                 
                 # Get split assignment for this event
                 event_split = splits[i - 1]
                 
-                # Build metadata dictionary with extracted channel code
-                trace_metadata = build_trace_metadata(event, data_3c, sampling_rate, channel_code, event_split)
+                # Build metadata dictionary with extracted channel codes
+                trace_metadata = build_trace_metadata(event, data_3c, sampling_rate, channel_codes, event_split)
                 
                 # Add trace to dataset using SeisBench writer
                 # The writer handles HDF5 writing and metadata collection
