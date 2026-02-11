@@ -261,9 +261,8 @@ def build_trace_metadata(
     trace_metadata = {
         # Station information (station_ prefix)
         'station_network_code': network_code,
-        'station_code': station_code
-    
-        'station_location_code': '',,        'station_latitude': station_latitude,
+        'station_code': station_code,
+        'station_latitude': station_latitude,
         'station_longitude': station_longitude,
         
         # Trace properties (trace_ prefix)
