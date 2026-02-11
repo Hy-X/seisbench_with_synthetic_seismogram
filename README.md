@@ -150,6 +150,8 @@ The project uses **SeisBench format** for data storage:
 
 ## Contributing
 
+We welcome contributions! Please see our [Contributing Guidelines](.github/CONTRIBUTING.md) for details.
+
 When adding new features:
 
 1. Follow PEP 8 style guidelines
@@ -157,6 +159,7 @@ When adding new features:
 3. Include comprehensive docstrings
 4. Write unit tests for new functionality
 5. Update relevant README files
+6. Submit a pull request using our [PR template](.github/PULL_REQUEST_TEMPLATE.md)
 
 ## Citation
 
@@ -173,12 +176,19 @@ If you use this code in your research, please cite:
 
 ## License
 
-[Add license information here]
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Getting Help
+
+- **Issues**: Use our [issue templates](.github/ISSUE_TEMPLATE/) for bugs, features, or questions
+- **Discussions**: For general questions and community support
+- **Documentation**: Check the [docs](#documentation) section for guides and references
 
 ## Contact
 
 - Author: Hongyu Xiao
-- GitHub: [Hy-X](https://github.com/Hy-X)
+- GitHub: [@Hy-X](https://github.com/Hy-X)
+- Repository: [seisbench_with_synthetic_seismogram](https://github.com/Hy-X/seisbench_with_synthetic_seismogram)
 
 ## Acknowledgments
 
