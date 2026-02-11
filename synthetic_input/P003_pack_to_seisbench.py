@@ -33,7 +33,7 @@ import os
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 from obspy import read
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import seisbench.data as sbd
 import seisbench.util as sbu
@@ -242,6 +242,9 @@ def build_trace_metadata(
         {network}.{station}.{channel_E}.{channel_N}.{channel_Z}.{start_time}{end_time}
     Example: "2V.TG11.EHE.EHN.EHZ.2023-08-18T1821082023-08-18T182108"
     
+    Note: The custom trace name is stored in 'trace_name_original' because SeisBench's
+    WaveformDataWriter automatically overwrites 'trace_name' with HDF5 bucket identifiers.
+    
     Args:
         event: Event dictionary from discover_synthetic_data()
         data_3c: Waveform array of shape (3, n_samples)
@@ -271,17 +274,16 @@ def build_trace_metadata(
     # Calculate end time based on trace length and sampling rate
     trace_duration_sec = data_3c.shape[1] / sampling_rate
     try:
-        from datetime import datetime, timedelta
         start_time = datetime.fromisoformat(start_time_str.replace('Z', '+00:00'))
         end_time = start_time + timedelta(seconds=trace_duration_sec)
         
-        # Format timestamps for trace name (remove colons, hyphens from time part)
+        # Format timestamps for trace name (remove colons from time part)
         # Format: YYYY-MM-DDTHHMMSS
         start_time_fmt = start_time.strftime('%Y-%m-%dT%H%M%S')
         end_time_fmt = end_time.strftime('%Y-%m-%dT%H%M%S')
     except (ValueError, AttributeError):
-        # Fallback if datetime parsing fails
-        start_time_fmt = start_time_str.replace(':', '').replace('-', '', 2)  # Remove colons, first 2 hyphens only
+        # Fallback if datetime parsing fails - only remove colons
+        start_time_fmt = start_time_str.replace(':', '')
         end_time_fmt = start_time_fmt
     
     # Construct trace name following SeisBench format
@@ -297,14 +299,15 @@ def build_trace_metadata(
     
     # Build metadata dictionary with SeisBench conventions
     trace_metadata = {
-        # Trace identifier
-        'trace_name': trace_name,
+        # Custom trace identifier (stored separately from SeisBench's internal trace_name)
+        # SeisBench will overwrite 'trace_name' with HDF5 bucket IDs, so we use a custom field
+        'trace_name_original': trace_name,
         
         # Station information (station_ prefix)
         'station_network_code': network_code,
         'station_code': station_code,
-        'station_latitude': station_latitude,
-        'station_longitude': station_longitude,
+        'station_latitude_deg': station_latitude,
+        'station_longitude_deg': station_longitude,
         
         # Trace properties (trace_ prefix)
         'trace_channel': channel_code,  # Band + instrument code from MSEED header
@@ -675,7 +678,9 @@ def main():
         print(f"  dataset = sbd.WaveformDataset('{dataset_path}', sampling_rate=100)")
         print(f"  waveform = dataset.get_waveforms(0)")
         print(f"  metadata = dataset.metadata")
-        print("\nNote: Original synthetic trace files have been deleted to save space.")
+        print("\nNote: Custom trace names are stored in 'trace_name_original' column.")
+        print("      SeisBench uses 'trace_name' for internal HDF5 bucket identifiers.")
+        print("      Original synthetic trace files have been deleted to save space.")
         print("      All data is preserved in the SeisBench format.")
         return 0
     else:
