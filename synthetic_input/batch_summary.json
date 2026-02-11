@@ -1,13 +1,13 @@
 {
-    "generation_timestamp": "2026-02-10T18:17:48.991953",
+    "generation_timestamp": "2026-02-10T18:20:16.564093",
     "num_seismograms": 7,
     "events": [
         {
             "event_id": "SYNTHETIC_001",
-            "p_arrival_time": 14.278740278652677,
-            "s_arrival_time": 42.60154544616332,
-            "noise_level": 0.2057155136068552,
-            "snr_db": 6.867329556567637,
+            "p_arrival_time": 70.70194158542083,
+            "s_arrival_time": 100.92803288086775,
+            "noise_level": 0.3241698617964349,
+            "snr_db": 4.8922736414488215,
             "files": {
                 "mseed": [
                     "SYNTHETIC_001_synthetic_HX_QD_HHZ.mseed",
@@ -20,10 +20,10 @@
         },
         {
             "event_id": "SYNTHETIC_002",
-            "p_arrival_time": 58.99664101443431,
-            "s_arrival_time": 62.635939325772256,
-            "noise_level": 0.14561455137585688,
-            "snr_db": 8.367952234675705,
+            "p_arrival_time": 81.59649253612983,
+            "s_arrival_time": 94.5661698160057,
+            "noise_level": 0.10559633073446431,
+            "snr_db": 9.763511724220994,
             "files": {
                 "mseed": [
                     "SYNTHETIC_002_synthetic_HX_QD_HHZ.mseed",
@@ -36,10 +36,10 @@
         },
         {
             "event_id": "SYNTHETIC_003",
-            "p_arrival_time": 90.19485770217726,
-            "s_arrival_time": 95.85910206784371,
-            "noise_level": 0.1803482899650597,
-            "snr_db": 7.438879712400418,
+            "p_arrival_time": 23.68571417012131,
+            "s_arrival_time": 44.06962501648816,
+            "noise_level": 0.27735086031304496,
+            "snr_db": 5.569704826474906,
             "files": {
                 "mseed": [
                     "SYNTHETIC_003_synthetic_HX_QD_HHZ.mseed",
@@ -52,10 +52,10 @@
         },
         {
             "event_id": "SYNTHETIC_004",
-            "p_arrival_time": 70.01354905448068,
-            "s_arrival_time": 104.07965432931141,
-            "noise_level": 0.2150432100450643,
-            "snr_db": 6.67474265672154,
+            "p_arrival_time": 52.3344187300112,
+            "s_arrival_time": 85.19578622015018,
+            "noise_level": 0.31577492685150765,
+            "snr_db": 5.0062235679236,
             "files": {
                 "mseed": [
                     "SYNTHETIC_004_synthetic_HX_QD_HHZ.mseed",
@@ -68,10 +68,10 @@
         },
         {
             "event_id": "SYNTHETIC_005",
-            "p_arrival_time": 26.88561215856681,
-            "s_arrival_time": 51.908912710553494,
-            "noise_level": 0.16475663454082562,
-            "snr_db": 7.831570878935538,
+            "p_arrival_time": 69.9023405580438,
+            "s_arrival_time": 74.12266429845424,
+            "noise_level": 0.26933612407007623,
+            "snr_db": 5.697053939625684,
             "files": {
                 "mseed": [
                     "SYNTHETIC_005_synthetic_HX_QD_HHZ.mseed",
@@ -84,10 +84,10 @@
         },
         {
             "event_id": "SYNTHETIC_006",
-            "p_arrival_time": 60.09152795741426,
-            "s_arrival_time": 93.42429936288269,
-            "noise_level": 0.17699268288825648,
-            "snr_db": 7.520446875757053,
+            "p_arrival_time": 36.157326337942166,
+            "s_arrival_time": 76.14883741607963,
+            "noise_level": 0.16678018825374574,
+            "snr_db": 7.778555402875811,
             "files": {
                 "mseed": [
                     "SYNTHETIC_006_synthetic_HX_QD_HHZ.mseed",
@@ -100,10 +100,10 @@
         },
         {
             "event_id": "SYNTHETIC_007",
-            "p_arrival_time": 80.36228924866182,
-            "s_arrival_time": 102.91815023010241,
-            "noise_level": 0.35965871650662173,
-            "snr_db": 4.441094098943925,
+            "p_arrival_time": 8.76777174644468,
+            "s_arrival_time": 85.6145908246333,
+            "noise_level": 0.20450565570823995,
+            "snr_db": 6.8929467685509795,
             "files": {
                 "mseed": [
                     "SYNTHETIC_007_synthetic_HX_QD_HHZ.mseed",
