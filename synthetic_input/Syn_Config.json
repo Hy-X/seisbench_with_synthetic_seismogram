@@ -11,7 +11,7 @@
     "coda_amplitude": 0.3,
     "window_length": 10.0,
     "pre_arrival_time": 2.0,
-    "num_seismograms": 72,
+    "num_seismograms": 200,
     "dataset_split_ratios": {
         "train": 0.7,
         "dev": 0.15,

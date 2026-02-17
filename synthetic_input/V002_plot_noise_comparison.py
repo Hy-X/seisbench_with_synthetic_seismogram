@@ -1,112 +1,95 @@
 #!/usr/bin/env python3
 """
-Create visualization comparing different noise levels.
+Create visualization comparing different noise levels using the SeisBench dataset.
 
-This script is self-contained and automatically discovers all synthetic
-seismogram files in the current directory. It loads individual metadata
-files, sorts events by noise level, and creates a comparison plot showing
-low, medium, and high noise examples.
+This script loads the processed SeisBench dataset from the ../data directory,
+sorts events by SNR, and creates a comparison plot showing low, medium, and
+high noise examples.
 
 Usage:
-    python plot_noise_comparison.py
-
-Requirements:
-    - SYNTHETIC_*_3C.npy files (seismogram data)
-    - SYNTHETIC_*_metadata.json files (event metadata)
-    - numpy, matplotlib
-
-No dependency on batch_summary.json.
+    python V002_plot_noise_comparison.py
 """
 
-import numpy as np
 import matplotlib.pyplot as plt
-import json
-import glob
-import os
+import numpy as np
+import pandas as pd
+import seisbench.data as sbd
 
-# Discover all synthetic seismogram files
-npy_files = sorted(glob.glob('SYNTHETIC_*_3C.npy'))
+def main():
+    # Load dataset
+    data_path = '../data'
+    print(f"Loading dataset from {data_path}...")
+    try:
+        dataset = sbd.WaveformDataset(data_path, sampling_rate=100)
+    except Exception as e:
+        print(f"Error loading dataset: {e}")
+        return
 
-if len(npy_files) == 0:
-    print("Error: No synthetic seismogram files found (SYNTHETIC_*_3C.npy)")
-    print("Please run batch_generate_synthetic_3c.py first.")
-    exit(1)
+    metadata = dataset.metadata
+    print(f"Found {len(metadata)} traces.")
 
-print(f"Found {len(npy_files)} synthetic seismograms")
+    if len(metadata) < 3:
+        print("Error: Need at least 3 traces.")
+        return
 
-# Load metadata for each event
-events = []
-for npy_file in npy_files:
-    # Extract event ID from filename
-    # Format: SYNTHETIC_XXX_synthetic_SYN_XX_3C.npy
-    event_id = npy_file.replace('_3C.npy', '').replace('_synthetic_SYN_XX', '')
+    # Sort by SNR (Higher SNR = Lower Noise)
+    # Ensure numeric
+    metadata['trace_snr_db'] = pd.to_numeric(metadata['trace_snr_db'])
+    sorted_meta = metadata.sort_values('trace_snr_db', ascending=False)
     
-    # Load corresponding metadata JSON
-    json_file = npy_file.replace('_3C.npy', '_metadata.json')
+    # Select examples: High SNR (Low Noise), Medium, Low SNR (High Noise)
+    indices = [0, len(sorted_meta)//2, len(sorted_meta)-1]
+    labels = ['Low Noise (High SNR)', 'Medium Noise', 'High Noise (Low SNR)']
     
-    if not os.path.exists(json_file):
-        print(f"Warning: Metadata file not found for {npy_file}, skipping...")
-        continue
+    # V001 Styling
+    z_color = '#344e41'  # Dark green from V001
     
-    with open(json_file, 'r') as f:
-        metadata = json.load(f)
+    fig, axes = plt.subplots(3, 1, figsize=(12, 8), sharex=True, constrained_layout=True)
     
-    events.append({
-        'event_id': event_id,
-        'npy_file': npy_file,
-        'noise_level': metadata.get('snr_db', 0),  # Use SNR to infer noise if available
-        'snr_db': metadata.get('snr_db', 0),
-        'metadata': metadata
-    })
+    for i, (idx, label) in enumerate(zip(indices, labels)):
+        # Get trace index (iloc gives row, need original index for get_waveforms)
+        trace_idx = sorted_meta.index[idx]
+        row = sorted_meta.iloc[idx]
+        
+        # Get waveform (Z component assumed index 0)
+        waveforms = dataset.get_waveforms(trace_idx)
+        z_trace = waveforms[0]
+        
+        # Time axis
+        sr = row['trace_sampling_rate_hz']
+        time = np.arange(len(z_trace)) / sr
+        
+        ax = axes[i]
+        ax.plot(time, z_trace, color=z_color, linewidth=1.5)
+        
+        # Plot phase arrivals
+        if 'trace_p_arrival_sample' in row and not pd.isna(row['trace_p_arrival_sample']):
+            p_time = row['trace_p_arrival_sample'] / sr
+            ax.axvline(p_time, color="#d33b14", linestyle='--', linewidth=2, label="P-arrival" if i == 0 else "")
+            ax.text(p_time, ax.get_ylim()[1], "P", color="#ab2838", ha="center", va="bottom", fontweight="bold")
 
-# Calculate noise level from SNR if not directly stored
-for event in events:
-    snr_db = event['snr_db']
-    # SNR (dB) = 10 * log10(1 / noise_level)
-    # noise_level = 1 / 10^(SNR/10)
-    if snr_db > 0:
-        event['noise_level'] = 1.0 / (10 ** (snr_db / 10))
-    else:
-        event['noise_level'] = 0.25  # Default fallback
-
-print(f"Loaded metadata for {len(events)} events")
-
-# Sort by noise level
-events_sorted = sorted(events, key=lambda x: x['noise_level'])
-
-# Pick low, medium, high noise examples
-low_noise = events_sorted[0]
-mid_noise = events_sorted[len(events_sorted)//2]
-high_noise = events_sorted[-1]
-
-examples = [low_noise, mid_noise, high_noise]
-labels = ['Low Noise', 'Medium Noise', 'High Noise']
-
-fig, axes = plt.subplots(3, 1, figsize=(12, 8), sharex=True)
-
-for i, (event, label) in enumerate(zip(examples, labels)):
-    event_id = event['event_id']
-    npy_file = event['npy_file']
-    noise = event['noise_level']
-    snr = event['snr_db']
+        if 'trace_s_arrival_sample' in row and not pd.isna(row['trace_s_arrival_sample']):
+            s_time = row['trace_s_arrival_sample'] / sr
+            ax.axvline(s_time, color='#ff7d00', linestyle='--', linewidth=2, label="S-arrival" if i == 0 else "")
+            ax.text(s_time, ax.get_ylim()[1], "S", color="#f07f14", ha="center", va="bottom", fontweight="bold")
+        
+        # Labels and title
+        snr = row['trace_snr_db']
+        eid = row['source_id']
+        ax.set_ylabel('Vertical (Z)\nAmplitude', fontsize=10)
+        ax.set_title(f"{label}: SNR={snr:.1f} dB | ID: {eid}", fontsize=12, fontweight='bold')
+        ax.grid(True, linestyle='--', alpha=0.6)
+        
+        ax.set_xlim(0, time[-1])
+        
+        if i < 2:
+            plt.setp(ax.get_xticklabels(), visible=False)
+            
+    axes[-1].set_xlabel('Time (s)', fontsize=12, fontweight='bold')
+    fig.suptitle('Seismic Noise Level Comparison', fontsize=14, fontweight='bold')
     
-    # Load data
-    data = np.load(npy_file)
-    time = np.arange(data.shape[1]) / 100.0
-    
-    # Plot Z component
-    ax = axes[i]
-    ax.plot(time, data[0], 'k-', linewidth=0.5)
-    ax.set_ylabel('Vertical (Z)', fontweight='bold')
-    ax.set_title(f'{label}: Noise={noise:.3f}, SNR={snr:.1f} dB ({event_id})', fontsize=11)
-    ax.grid(True, alpha=0.3)
-    ax.set_xlim(0, time[-1])
+    plt.savefig('noise_comparison.png', dpi=150)
+    print("Saved noise_comparison.png")
 
-axes[-1].set_xlabel('Time (s)', fontweight='bold')
-plt.suptitle('Effect of Noise Level Randomization', fontsize=14, fontweight='bold', y=0.995)
-plt.tight_layout()
-plt.savefig('noise_comparison.png', dpi=150, bbox_inches='tight')
-print('✓ Saved noise_comparison.png')
-print(f'  Low noise:  {examples[0]["event_id"]:15s} Noise={examples[0]["noise_level"]:.4f} (SNR: {examples[0]["snr_db"]:.1f} dB)')
-print(f'  Mid noise:  {examples[1]["event_id"]:15s} Noise={examples[1]["noise_level"]:.4f} (SNR: {examples[1]["snr_db"]:.1f} dB)')
-print(f'  High noise: {examples[2]["event_id"]:15s} Noise={examples[2]["noise_level"]:.4f} (SNR: {examples[2]["snr_db"]:.1f} dB)')
+if __name__ == "__main__":
+    main()
